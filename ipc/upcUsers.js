@@ -1,5 +1,4 @@
 const { ipcMain } = require("electron");
-const UserService = require("../Services/UserService");
 // const { User } = require('./../Model/User');
 // const {getAllUsers} = require("../Services/UserService");
 // const UserRepository = require("../Repository/UserRepository");
@@ -13,15 +12,12 @@ function ipcLogin() {
 
     ipcMain.on('formData', async (event, formData) => {
         // Handle formData as needed
-        try {
-            const resp = await UserService.getAllUsers();
-            console.log({resp});
-            event.reply('formData-reply', resp)
-        } catch (error) {
-            console.log(error);
-        }
+        console.log({ formData });
+        return await setTimeout(() => {
+            return formData;
+        }, 1);
         // try {
-        //     const resp = UserRepository.getAllUsers();
+        //     const resp = UserRepository.create(formData);
         //     console.log({resp});
         // } catch (error) {
         //     console.log({error});
