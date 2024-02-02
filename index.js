@@ -18,13 +18,21 @@ const createWindow = () => {
 
     // Load the React app
 
-    // const urlPath = path.join(__dirname, 'build', 'index.html');
-
-    const url = path.join(__dirname, 'build', 'index.html');
-
-    window.loadFile(url);
+    // const url = path.join(__dirname, 'build', 'index.html');
+    try {
+        // if (false) {
+        //     window.loadURL('http://localhost:3000/contract')
+        // } else {
+        const url = path.join(__dirname, 'build', 'index.html');
+        console.log({ url });
+        window.loadFile(url);
+        // }
+    } catch (error) {
+        console.log(error);
+    }
 }
 const { ipcHandler } = require('./ipc/ipcHandler');
+
 ipcHandler();
 
 app.whenReady().then(() => {

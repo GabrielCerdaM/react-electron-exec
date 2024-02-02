@@ -1,19 +1,17 @@
 import {
-    createBrowserRouter,
+    createHashRouter,
 } from "react-router-dom";
 import Login from "../Components/Module/Login";
-import ErrorPage from "../Components/erros/error-page";
 import Contract from "../Components/Module/Contract";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
     {
         path: "/",
-        element: <div>Hello world!</div>,
+        element: <Contract/>,
     },
     {
         path:"login",
         element: <Login/>,
-        errorElement: <ErrorPage/>
     },
     {
         path:"/contract",

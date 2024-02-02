@@ -16,9 +16,9 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log('handleSubmit');
-        const payload = { a: "123", b: 123, c: 123 }
-        const resp = await window.api.test(payload);
-        console.log({ resp });
+        // const payload = { a: "123", b: 123, c: 123 }
+        // const resp = await window.api.test(payload);
+        // console.log({ resp });
     };
 
     return (
