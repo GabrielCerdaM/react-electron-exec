@@ -9,19 +9,35 @@ export default function Contract() {
         address: '',
         email: '',
         kindship: '',
-        rutDeceased:'',
-        nameDeceased:'',
+        rutDeceased: '',
+        nameDeceased: '',
         dateDeceased: '',
         typeBenefit: '',
-        amountBenefit: '',
+        amountBenefit: 0,
         wakeAddress: '',
         cementery: '',
     });
 
+    const mock = {
+        rut: '19.412.216-0',
+        name: 'Nombre de prueba',
+        phone: '999999999',
+        address: 'direccion falsa',
+        email: 'correo@email.cl',
+        kindship: 'parentezco',
+        rutDeceased: '1111111-1',
+        nameDeceased: 'nombre',
+        dateDeceased: '1990-12-12',
+        typeBenefit: 'AFP',
+        amountBenefit: 999999,
+        wakeAddress: 'Direccion falsa',
+        cementery: 'Direccion falsa',
+    }
+
     const validationRules = {
         rut: {
             required: true,
-            regex: /^[0-9]{7,8}-[0-9Kk]$/, // Example regex for a Chilean RUT
+            regex: /^\d{1,3}(\.\d{3})*-\w$/, // Example regex for a Chilean RUT
         },
         name: {
             required: true,
@@ -45,7 +61,7 @@ export default function Contract() {
         },
         rutDeceased: {
             required: true,
-            regex: /^[0-9]{7,8}-[0-9Kk]$/, // Example regex for a Chilean RUT
+            regex: /^\d{1,3}(\.\d{3})*-\w$/, // Example regex for a Chilean RUT
         },
         nameDeceased: {
             required: true,
@@ -70,22 +86,6 @@ export default function Contract() {
         },
     };
 
-    const mock = {
-        rut: '19.412.216-0',
-        name: 'Nombre de prueba',
-        phone: '999999999',
-        address: 'direccion falsa',
-        email: 'correo@email.cl',
-        kindship: 'parentezco',
-        rutDeceased:'1111111-1',
-        nameDeceased:'nombre',
-        dateDeceased: '1990-12-12',
-        typeBenefit: 'AFP',
-        amountBenefit: '999999',
-        wakeAddress: 'Direccion falsa',
-        cementery: 'Direccion falsa',
-    }
-
     const [errors, setErrors] = useState({
         rut: '',
         name: '',
@@ -93,31 +93,46 @@ export default function Contract() {
         address: '',
         email: '',
         kindship: '',
-        rutDeceased:'',
-        nameDeceased:'',
+        rutDeceased: '',
+        nameDeceased: '',
         dateDeceased: '',
         typeBenefit: '',
-        amountBenefit: '',
+        amountBenefit: 0,
         wakeAddress: '',
         cementery: '',
     });
 
+    // const formatRut = (rut) => {
+    //     // Remove any existing dots and hyphen
+    //     const cleanRut = rut.replace(/[\.-]/g, '');
+
+    //     // Split into number and check digit
+    //     const numberPart = cleanRut.slice(0, -1);
+    //     const checkDigit = cleanRut.slice(-1);
+
+    //     // Add dots to the number part
+    //     const formattedNumberPart = numberPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    //     // Combine the formatted number part and check digit
+    //     const formattedRut = `${formattedNumberPart}-${checkDigit}`;
+
+    //     return formattedRut;
+    // };
     const formatRut = (rut) => {
-        // Remove any existing dots and hyphen
-        const cleanRut = rut.replace(/[\.-]/g, '');
-
-        // Split into number and check digit
-        const numberPart = cleanRut.slice(0, -1);
-        const checkDigit = cleanRut.slice(-1);
-
-        // Add dots to the number part
-        const formattedNumberPart = numberPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-        // Combine the formatted number part and check digit
-        const formattedRut = `${formattedNumberPart}-${checkDigit}`;
-
-        return formattedRut;
-    };
+        // XX.XXX.XXX-X
+        const newRut = rut.replace(/\./g, '').replace(/\-/g, '').trim().toLowerCase();
+        const lastDigit = newRut.substr(-1, 1);
+        const rutDigit = newRut.substr(0, newRut.length - 1)
+        let format = '';
+        for (let i = rutDigit.length; i > 0; i--) {
+            const e = rutDigit.charAt(i - 1);
+            format = e.concat(format);
+            if (i % 3 === 0) {
+                format = '.'.concat(format);
+            }
+        }
+        return format.concat('-').concat(lastDigit);
+    }
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -127,12 +142,18 @@ export default function Contract() {
             value = formatRut(event.target.value);
         }
         setInputs(values => ({ ...values, [name]: value }))
+        setErrors(values => ({ ...values, [name]: null }))
+    }
+
+    const handleFakeSubmit = async (e) => {
+        e.preventDefault();
+        setInputs(mock);
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const errors = validateForm(inputs);
-        if (errors) {
+        if (errors !== null) {
             setErrors(errors);
             console.log({ errors });
             return;
@@ -165,13 +186,13 @@ export default function Contract() {
                         errors[fieldName] = 'Formano no válido';
                     }
 
-                    if (rules.numeric && !isNaN(formData[fieldName])) {
-                        errors[fieldName] = 'Formato no válido, requiere numérico';
-                    }
+                    // if (rules.numeric)) {
+                    //     errors[fieldName] = 'Formato no válido, requiere numérico';
+                    // }
                 }
             }
         }
-        return errors;
+        return Object.keys(errors).length === 0 ? null : errors;
     };
 
     return (
@@ -353,7 +374,10 @@ export default function Contract() {
                     </div>
                 </div>
                 <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    Button
+                    Enviar
+                </button>
+                <button type="button" onClick={handleFakeSubmit} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-5">
+                    Mock
                 </button>
             </form>
         </>
