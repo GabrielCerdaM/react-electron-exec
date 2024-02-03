@@ -158,7 +158,7 @@ export default function Contract() {
             console.log({ errors });
             return;
         }
-        const resp = await window.api.createContract(mock);
+        const resp = await window.api.createContract(inputs);
         console.log({ resp });
     }
 
