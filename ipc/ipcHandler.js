@@ -5,6 +5,7 @@ const { ipcContract } = require('./ipcContract');
 function ipcHandler() {
     ipcLogin();
     ipcTest();
+
     ipcContract();
 }
 

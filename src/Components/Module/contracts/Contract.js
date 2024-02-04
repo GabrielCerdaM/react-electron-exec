@@ -102,25 +102,9 @@ export default function Contract() {
         cementery: '',
     });
 
-    // const formatRut = (rut) => {
-    //     // Remove any existing dots and hyphen
-    //     const cleanRut = rut.replace(/[\.-]/g, '');
-
-    //     // Split into number and check digit
-    //     const numberPart = cleanRut.slice(0, -1);
-    //     const checkDigit = cleanRut.slice(-1);
-
-    //     // Add dots to the number part
-    //     const formattedNumberPart = numberPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-
-    //     // Combine the formatted number part and check digit
-    //     const formattedRut = `${formattedNumberPart}-${checkDigit}`;
-
-    //     return formattedRut;
-    // };
     const formatRut = (rut) => {
         // XX.XXX.XXX-X
-        const newRut = rut.replace(/\./g, '').replace(/\-/g, '').trim().toLowerCase();
+        const newRut = rut.replace(/\./g, '').replace(/\\-/g, '').trim().toLowerCase();
         const lastDigit = newRut.substr(-1, 1);
         const rutDigit = newRut.substr(0, newRut.length - 1)
         let format = '';
@@ -158,7 +142,7 @@ export default function Contract() {
             console.log({ errors });
             return;
         }
-        const resp = await window.api.createContract(inputs);
+        const resp = await window.api.contractOperation({action:"create", payload:inputs});
         console.log({ resp });
     }
 

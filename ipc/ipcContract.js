@@ -1,23 +1,44 @@
 const { ipcMain } = require("electron");
 const UserService = require("../Services/UserService");
+const ContractService = require("../Services/ContractService");
+const { getAll: getAllDocuments } = require('../Repository/DocumentRepository');
+const { getAll: getAllPayments } = require('../Repository/PaymentRepository');
 
 function ipcContract() {
-    // ipcMain.on('contract-create', async (event, { model, action, payload }) => {
-    //     try {
-    //         const resp = UserService.create(payload);
-    //         console.log('on contract-create',{resp});
-    //     } catch (error) {
-    //         console.log({error});
-    //     }
-    // });
-    ipcMain.handle('contract-create', async (event, payload) => {
-        try {
-            const resp = UserService.create(payload);
-            console.log('ipcMain handle contract-create', { resp });
-            return resp;
-        } catch (error) {
-            console.log({ error });
+    const handleFind = async (payload) => {
+        return await ContractService.getAll()
+    }
+
+    const handleCreate = async (payload) => {
+        return await ContractService.create(payload)
+    }
+    const handleUpdate = ({ id, payload }) => { }
+    const handleDelete = () => { }
+
+    // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
+    // In the main process
+    ipcMain.handle('contract-operation', (event, data) => {
+        console.log({ event });
+        const { action, payload, id = null } = data;
+        let result;
+        switch (action) {
+            case 'find':
+                result = handleFind();
+                break;
+            case 'create':
+                result = handleCreate(payload);
+                break;
+            case 'update':
+                result = handleUpdate({ id, payload });
+                break;
+            case 'delete':
+                result = handleDelete({ id });
+                break;
+            default:
+                console.error('Invalid action:', action);
+                return event.reply('crud-operation-reply', { success: false, error: 'Invalid action' });
         }
-    })
+        return result;
+    });
 }
 module.exports = { ipcContract }
