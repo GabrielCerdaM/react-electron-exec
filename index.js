@@ -1,51 +1,51 @@
-const { app, BrowserWindow } = require('electron')
-const path = require('path');
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
 
-const { insertData, syncDataBase } = require('./db/index');
+const { insertData, syncDataBase } = require("./db/index");
 
 const createWindow = () => {
-    const window = new BrowserWindow({
-        width: 800,
-        height: 800,
-        webPreferences: {
-            preload: path.join(__dirname, './preload.js'),
-            nodeIntegration: true,
-            contextIsolation: true,
-        }
-    })
+  const window = new BrowserWindow({
+    width: 800,
+    height: 800,
+    webPreferences: {
+      preload: path.join(__dirname, "./preload.js"),
+      nodeIntegration: true,
+      contextIsolation: true,
+    },
+  });
 
-    window.openDevTools();
+  window.openDevTools();
 
-    // Load the React app
+  // Load the React app
 
+  // const url = path.join(__dirname, 'build', 'index.html');
+  try {
+    // if (false) {
+    window.loadURL("http://localhost:3000");
+    // } else {
     // const url = path.join(__dirname, 'build', 'index.html');
-    try {
-        // if (false) {
-            window.loadURL('http://localhost:3000/contract')
-        // } else {
-        // const url = path.join(__dirname, 'build', 'index.html');
-        // console.log({ url });
-        // window.loadFile(url);
-        // }
-    } catch (error) {
-        console.log(error);
-    }
-}
+    // console.log({ url });
+    // window.loadFile(url);
+    // }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-const { ipcHandler } = require('./ipc/ipcHandler');
+const { ipcHandler } = require("./ipc/ipcHandler");
 
 ipcHandler();
 
 app.whenReady().then(async () => {
-    await syncDataBase();
-    await insertData();
-    createWindow()
+  await syncDataBase();
+  await insertData();
+  createWindow();
 
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
-})
+  app.on("activate", () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+  });
+});
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
-})
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
+});
