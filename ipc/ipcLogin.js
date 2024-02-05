@@ -14,7 +14,7 @@ function ipcLogin() {
     ipcMain.on('formData', async (event, formData) => {
         // Handle formData as needed
         try {
-            const resp = await UserService.getAllUsers();
+            const resp = await UserService.create(formData);
             console.log({resp});
             event.reply('formData-reply', resp)
         } catch (error) {

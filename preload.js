@@ -2,15 +2,22 @@ const { contextBridge, ipcRenderer } = require('electron/renderer');
 
 
 contextBridge.exposeInMainWorld('api', {
-    // window: (path) => ipcRenderer.send('window', path),
-    // test: async () => await testConnection(),
     test: async (formData) => {
         ipcRenderer.on('formData-reply', (_event, arg) => {
-            console.log('reply',arg) // prints "pong" in the DevTools console
+            console.log('reply', arg) // prints "pong" in the DevTools console
         });
         ipcRenderer.send('formData', formData)
-        // ipcRenderer.send('asynchronous-message', 'ping')
     },
     handleChannel: () => ipcRenderer.invoke('db'),
-    login: () => ipcRenderer.invoke('login')
+    login: () => ipcRenderer.invoke('login'),
+    contractOperation: ({ action, payload }) => {
+        return ipcRenderer.invoke('contract-operation', { action, payload }).then(result => {
+            console.log('ipcRenderer invoke contract-operation', { result });
+            return result;
+        })
+        // ipcRenderer.send('contract-operation', { model: 'User', action: 'add', payload: formData });
+        // ipcRenderer.on('contract-operation-reply', (_event, arg) => {
+        //     console.log('contract-operation-reply', arg) // prints "pong" in the DevTools console
+        // });
+    },
 })

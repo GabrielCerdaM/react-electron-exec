@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { useState } from "react";
+=======
+import { useState } from "react"
+import Layout from "../Layout/Layout";
+>>>>>>> 90a74e0dc8e86a4bb84ca048b687113b6beb163d
 
 export default function Login() {
   const [email, setEmail] = useState("");

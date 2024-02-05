@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path');
 
-
+const { insertData, syncDataBase } = require('./db/index');
 
 const createWindow = () => {
     const window = new BrowserWindow({
@@ -18,18 +18,28 @@ const createWindow = () => {
 
     // Load the React app
 
-    // const urlPath = path.join(__dirname, 'build', 'index.html');
-
-    const url = path.join(__dirname, 'build', 'index.html');
-
-    window.loadFile(url);
+    // const url = path.join(__dirname, 'build', 'index.html');
+    try {
+        // if (false) {
+            window.loadURL('http://localhost:3000/contract')
+        // } else {
+        // const url = path.join(__dirname, 'build', 'index.html');
+        // console.log({ url });
+        // window.loadFile(url);
+        // }
+    } catch (error) {
+        console.log(error);
+    }
 }
+
 const { ipcHandler } = require('./ipc/ipcHandler');
+
 ipcHandler();
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+    await syncDataBase();
+    await insertData();
     createWindow()
-
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
