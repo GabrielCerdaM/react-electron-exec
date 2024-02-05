@@ -1,0 +1,68 @@
+{
+  "getContracts": [
+    {
+      "rut": "19.412.216-0",
+      "name": "Nombre de prueba",
+      "phone": "999999999",
+      "address": "direccion falsa",
+      "email": "correo@email.cl",
+      "kindship": "parentezco",
+      "rutDeceased": "1111111-1",
+      "nameDeceased": "nombre",
+      "dateDeceased": "1990-12-12T00:00:00.000Z",
+      "typeBenefit": "AFP",
+      "amountBenefit": 999999,
+      "wakeAddress": "Direccion falsa",
+      "id": 3,
+      "cemetery": null
+    },
+    {
+      "rut": "19.412.216-0",
+      "name": "Nombre de prueba",
+      "phone": "999999999",
+      "address": "direccion falsa",
+      "email": "correo@email.cl",
+      "kindship": "parentezco",
+      "rutDeceased": "1111111-1",
+      "nameDeceased": "nombre",
+      "dateDeceased": "1990-12-12T00:00:00.000Z",
+      "typeBenefit": "AFP",
+      "amountBenefit": 999999,
+      "wakeAddress": "Direccion falsa",
+      "id": 3,
+      "cemetery": null
+    },
+    {
+      "rut": "19.412.216-0",
+      "name": "Nombre de prueba",
+      "phone": "999999999",
+      "address": "direccion falsa",
+      "email": "correo@email.cl",
+      "kindship": "parentezco",
+      "rutDeceased": "1111111-1",
+      "nameDeceased": "nombre",
+      "dateDeceased": "1990-12-12T00:00:00.000Z",
+      "typeBenefit": "AFP",
+      "amountBenefit": 999999,
+      "wakeAddress": "Direccion falsa",
+      "id": 3,
+      "cemetery": null
+    },
+    {
+      "rut": "19.412.216-0",
+      "name": "Nombre de prueba",
+      "phone": "999999999",
+      "address": "direccion falsa",
+      "email": "correo@email.cl",
+      "kindship": "parentezco",
+      "rutDeceased": "1111111-1",
+      "nameDeceased": "nombre",
+      "dateDeceased": "1990-12-12T00:00:00.000Z",
+      "typeBenefit": "AFP",
+      "amountBenefit": 999999,
+      "wakeAddress": "Direccion falsa",
+      "id": 3,
+      "cemetery": null
+    }
+  ]
+}

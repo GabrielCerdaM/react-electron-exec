@@ -8,11 +8,11 @@ export const routes = createHashRouter([
     element: <ContractModule />,
     children: [
       {
-        path: "/",
+        path: "/contract/create",
         element: <CreateContract />,
       },
       {
-        path: "/view",
+        path: "/contract/view",
         element: <List />,
       },
     ],

@@ -20,13 +20,13 @@ const createWindow = () => {
 
   // const url = path.join(__dirname, 'build', 'index.html');
   try {
-    // if (false) {
-    window.loadURL("http://localhost:3000");
-    // } else {
-    // const url = path.join(__dirname, 'build', 'index.html');
-    // console.log({ url });
-    // window.loadFile(url);
-    // }
+    if (true) {
+      window.loadURL("http://localhost:3000");
+    } else {
+      const url = path.join(__dirname, "build", "index.html");
+      console.log({ url });
+      window.loadFile(url);
+    }
   } catch (error) {
     console.log(error);
   }
