@@ -1,27 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+import ItemList from "./ItemList";
 
 export default function List() {
-  const [contracts, setContracts] = useState([]);
+  // const [contracts, setContracts] = useState([]);
 
-  const getContracts = async () => {
-    try {
-      const contractsData = await window.api.contractOperation({
-        action: "find",
-        payload: null,
-      });
-      console.log("frontend", { contractsData });
-      if (contractsData) {
-        setContracts(contractsData);
-      }
-    } catch (error) {
-      console.log({ error });
-    }
-  };
-
-  useEffect(() => {
-    getContracts();
-  }, []);
+  const { contracts } = useLoaderData();
 
   return (
     <>
@@ -39,15 +23,24 @@ export default function List() {
             <div className="w-full md:w-auto">
               <Link
                 className="block text-white bg-blue-700 rounded p-3 text-center"
-                to="/contract/create"
+                to="/contract"
               >
                 Nuevo Contrato
               </Link>
             </div>
           </div>
         </div>
-        <div className="p-6 px-0 overflow-hidden">
-          <table className="w-full text-left table-auto min-w-max">
+        <div>
+          {contracts.length > 0 ? (
+            contracts.map((contract) => (
+              <ItemList key={contract.dataValues.id} contract={contract} />
+            ))
+          ) : (
+            <>
+              <p>No hay registros</p>
+            </>
+          )}
+          {/* <table className="w-full text-left table-auto min-w-max">
             <thead>
               <tr>
                 <th className="p-4 border-y border-blue-gray-100 bg-blue-gray-50/50">
@@ -85,7 +78,6 @@ export default function List() {
                       <td className="pt-4 border-b border-blue-gray-50">
                         <div>
                           <p className="block font-sans text-sm antialiased font-bold leading-normal text-blue-gray-900">
-                            {/* {JSON.stringify(dataValues)} */}
                             {dataValues.rut}
                           </p>
                         </div>
@@ -102,26 +94,16 @@ export default function List() {
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
                         {dataValues.kindship}
-                        {/* <div className="w-max">
-                                            <div
-                                                className="relative grid items-center px-2 py-1 font-sans text-xs font-bold text-green-900 uppercase rounded-md select-none whitespace-nowrap bg-green-500/20">
-                                                <span className="">paid</span>
-                                            </div>
-                                        </div> */}
                       </td>
                       <td className="p-4 border-b border-blue-gray-50">
-                        <div className="flex justify-around space-x-2">
-                          {/* <Link className="btn" to="/contract/create" aria-current="page">Ver detalle</Link> */}
-                          {/* <Link className="btn" to="/contract/create" aria-current="page">Editar</Link> */}
-                          {/* <Link className="btn" to="/contract/create" aria-current="page">Eliminar</Link> */}
-                        </div>
+                        <div className="flex justify-around space-x-2"></div>
                       </td>
                     </tr>
                   </>
                 );
               })}
             </tbody>
-          </table>
+          </table> */}
         </div>
         {/* <div className="flex items-center justify-between p-4 border-t border-blue-gray-50">
                 <button

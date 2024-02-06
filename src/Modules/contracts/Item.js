@@ -1,6 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { findById } from "./utils/findById";
 
-export default function CreateContract() {
+export default function Item() {
+  const { contractId } = useParams();
+
+  const id = parseInt(contractId);
+
+  const getContract = async (id) => {
+    return await findById(id);
+  };
+
   const [inputs, setInputs] = useState({
     rut: "",
     name: "",
@@ -16,6 +26,19 @@ export default function CreateContract() {
     wakeAddress: "",
     cementery: "",
   });
+
+  const setForm = (newInputs) => {
+    setInputs({ ...newInputs });
+  };
+  useEffect(() => {
+    const fetchContract = async () => {
+      const contract = await getContract(id);
+      const { dataValues } = contract;
+      setInputs((values) => ({ ...values, ...dataValues }));
+    };
+    fetchContract();
+    return () => {};
+  }, [id]);
 
   const validationRules = {
     rut: {
@@ -487,13 +510,20 @@ export default function CreateContract() {
               </p>
             </div>
           </div>
+          <div className="flex flex-row-reverse">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Button
+            </button>
+            <input
+              className="py-2 px-4 mr-3 rounded bg-gray-200 text-gray-700"
+              type="number"
+              placeholder="Precio"
+            />
+          </div>
         </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Button
-        </button>
       </form>
     </>
   );

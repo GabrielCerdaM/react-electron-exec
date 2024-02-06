@@ -6,6 +6,11 @@ class ContractService {
     return ContractRepository.getAll();
   }
 
+  findById(id) {
+    // return await User.findAll();
+    return ContractRepository.findById(id);
+  }
+
   create(formData) {
     try {
       return ContractRepository.create(formData);

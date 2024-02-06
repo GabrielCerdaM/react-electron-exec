@@ -5,11 +5,15 @@ const { getAll: getAllDocuments } = require("../Repository/DocumentRepository");
 const { getAll: getAllPayments } = require("../Repository/PaymentRepository");
 
 function ipcContract() {
-  const handleFind = async (payload) => {
+  const handleFind = async () => {
     return await ContractService.getAll();
   };
 
-  const handleCreate = async (payload) => {
+  const handleFindById = async (id) => {
+    return await ContractService.findById(id);
+  };
+
+  const handleCreate = async ({ payload }) => {
     return await ContractService.create(payload);
   };
   const handleUpdate = async ({ id, payload }) => {
@@ -23,14 +27,17 @@ function ipcContract() {
   // In the main process
   ipcMain.handle("contract-operation", (event, data) => {
     console.log({ event });
-    const { action, payload, id = null } = data;
+    const { action, payload, id } = data;
     let result;
     switch (action) {
       case "find":
         result = handleFind();
         break;
+      case "findById":
+        result = handleFindById(id);
+        break;
       case "create":
-        result = handleCreate(payload);
+        result = handleCreate({ payload });
         break;
       case "update":
         result = handleUpdate({ id, payload });

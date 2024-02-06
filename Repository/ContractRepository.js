@@ -5,6 +5,9 @@ class ContractRepository {
     return Contract.findAll();
   }
 
+  findById(id) {
+    return Contract.findByPk(id);
+  }
   create(payload) {
     try {
       console.log("ContractRepository ", { payload });

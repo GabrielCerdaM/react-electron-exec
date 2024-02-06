@@ -7,10 +7,10 @@ export default function Layout({ children }) {
         <nav>
           <ul className="flex gap-5">
             <li>
-              <Link to="/"> Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/contract/view">View</Link>
+              <Link to="/">View</Link>
             </li>
             {/* <li>
               <Link to="/"> Home3</Link>
