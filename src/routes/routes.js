@@ -3,7 +3,7 @@ import ContractModule from "../Modules/contracts/ContractModule";
 import List from "../Modules/contracts/List";
 import { loaderContract } from "../Modules/contracts/utils/loaderContract";
 import CreateContract from "../Modules/contracts/CreateContract";
-import Contract from "../Modules/contracts/Contract";
+import ContractEdit from "../Modules/contracts/ContractEdit";
 export const routes = createHashRouter([
   {
     path: "/",
@@ -16,7 +16,7 @@ export const routes = createHashRouter([
       },
       {
         path: "/contract/:contractId",
-        element: <Contract />,
+        element: <ContractEdit />,
       },
       {
         path: "/contract",

@@ -11,7 +11,7 @@ export default function Item({ contract }) {
   }
 
   const handleSubmit = (id) => {
-    const success = deleteItem(id)
+    deleteItem(id)
   }
   return (
     <>
