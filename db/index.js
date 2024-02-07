@@ -29,7 +29,7 @@ async function insertData() {
         const array = [
             {
                 rut: '19.412.216-0',
-                name: 'Nombre de prueba',
+                name: 'Nombre de prueba asdasd',
                 phone: '999999999',
                 address: 'direccion falsa',
                 email: 'correo@email.cl',
@@ -43,7 +43,7 @@ async function insertData() {
                 cementery: 'Direccion falsa',
             }, {
                 rut: '19.412.216-0',
-                name: 'Nombre de prueba',
+                name: 'Nombre de prueba dddddd',
                 phone: '999999999',
                 address: 'direccion falsa',
                 email: 'correo@email.cl',
@@ -57,7 +57,7 @@ async function insertData() {
                 cementery: 'Direccion falsa',
             }, {
                 rut: '19.412.216-0',
-                name: 'Nombre de prueba',
+                name: 'Nombre de prueba vvvvv',
                 phone: '999999999',
                 address: 'direccion falsa',
                 email: 'correo@email.cl',

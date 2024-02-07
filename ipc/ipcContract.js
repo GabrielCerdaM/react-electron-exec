@@ -1,8 +1,5 @@
 const { ipcMain } = require("electron");
-const UserService = require("../Services/UserService");
 const ContractService = require("../Services/ContractService");
-const { getAll: getAllDocuments } = require("../Repository/DocumentRepository");
-const { getAll: getAllPayments } = require("../Repository/PaymentRepository");
 
 function ipcContract() {
   const handleFind = async () => {
@@ -19,8 +16,8 @@ function ipcContract() {
   const handleUpdate = async ({ id, payload }) => {
     return await ContractService.update(id, payload);
   };
-  const handleDelete = async ({ id }) => {
-    return await ContractService.update(id);
+  const handleDelete = async (id) => {
+    return await ContractService.delete(id);
   };
 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,7 +40,7 @@ function ipcContract() {
         result = handleUpdate({ id, payload });
         break;
       case "delete":
-        result = handleDelete({ id });
+        result = handleDelete(id);
         break;
       default:
         console.error("Invalid action:", action);

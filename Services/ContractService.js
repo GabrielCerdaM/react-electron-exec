@@ -26,6 +26,14 @@ class ContractService {
       console.log(error);
     }
   }
+
+  delete(id) {
+    try {
+      return ContractRepository.delete(id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = new ContractService();

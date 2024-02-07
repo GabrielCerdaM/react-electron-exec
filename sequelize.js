@@ -4,7 +4,7 @@ const { Sequelize } = require("sequelize");
 // Option 1: Passing a connection URI
 // how .exe app affect with config?
 
-const sequelize = new Sequelize("electron", "root", "olxdev9!", {
+const sequelize = new Sequelize("electron", "root", process.env.DB_PASS, {
   host: "localhost",
   dialect:
     "mysql" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
