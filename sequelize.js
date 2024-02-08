@@ -1,6 +1,7 @@
-require("dotenv").config();
 const { Sequelize } = require("sequelize");
-
+const { config } = require("dotenv");
+config();
+console.log(process.env.DB_PASS);
 // Option 1: Passing a connection URI
 // how .exe app affect with config?
 
