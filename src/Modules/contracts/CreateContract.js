@@ -1,6 +1,27 @@
 import { useState } from "react";
 
 export default function CreateContract() {
+  const mockData = (e) => {
+    e.preventDefault();
+    const mock = {
+      rut: "19.412.216-0",
+      name: "Nombre de prueba",
+      phone: "999999999",
+      address: "direccion falsa",
+      email: "correo@email.cl",
+      kindship: "parentezco",
+      rutDeceased: "1111111-1",
+      nameDeceased: "nombre",
+      dateDeceased: "2024-02-10",
+      typeBenefit: "AFP",
+      amountBenefit: "999999",
+      wakeAddress: "Direccion falsa",
+      cementery: "Cementerio direccion prueba",
+      price: "1000",
+    };
+    setInputs((values) => ({ ...values, ...mock }));
+  };
+
   const [inputs, setInputs] = useState({
     rut: "",
     name: "",
@@ -15,6 +36,7 @@ export default function CreateContract() {
     amountBenefit: "",
     wakeAddress: "",
     cementery: "",
+    price: "",
   });
 
   const validationRules = {
@@ -69,22 +91,6 @@ export default function CreateContract() {
     },
   };
 
-  const mock = {
-    rut: "19.412.216-0",
-    name: "Nombre de prueba",
-    phone: "999999999",
-    address: "direccion falsa",
-    email: "correo@email.cl",
-    kindship: "parentezco",
-    rutDeceased: "1111111-1",
-    nameDeceased: "nombre",
-    dateDeceased: "1990-12-12",
-    typeBenefit: "AFP",
-    amountBenefit: "999999",
-    wakeAddress: "Direccion falsa",
-    cementery: "Direccion falsa",
-  };
-
   const [errors, setErrors] = useState({
     rut: "",
     name: "",
@@ -99,11 +105,12 @@ export default function CreateContract() {
     amountBenefit: "",
     wakeAddress: "",
     cementery: "",
+    price: "",
   });
 
   const formatRut = (rut) => {
     // Remove any existing dots and hyphen
-    const cleanRut = rut.replace(/[\.-]/g, "");
+    const cleanRut = rut.replace(/[.-]/g, "");
 
     // Split into number and check digit
     const numberPart = cleanRut.slice(0, -1);
@@ -124,7 +131,6 @@ export default function CreateContract() {
   const handleChange = (event) => {
     const name = event.target.name;
     let value = event.target.value;
-
     if (name === "rut" || name === "rutDeceased") {
       value = formatRut(event.target.value);
     }
@@ -133,16 +139,18 @@ export default function CreateContract() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const errors = validateForm(inputs);
-    if (errors) {
-      setErrors(errors);
-      console.log({ errors });
-      return;
-    }
+    // const errors = validateForm(inputs);
+    // if (errors) {
+    //   setErrors(errors);
+    //   console.log({ errors });
+    //   return;
+    // }
     const resp = await window.api.contractOperation({
       action: "create",
       payload: inputs,
     });
+    if (resp.message) {
+    }
     console.log({ resp });
   };
 
@@ -154,11 +162,12 @@ export default function CreateContract() {
     for (const fieldName in formData) {
       if (formData.hasOwnProperty(fieldName)) {
         const value = formData[fieldName];
+        console.log({ typeof: typeof value });
         const rules = validationRules[fieldName];
 
         // Check each validation rule for the current field
         if (rules) {
-          if (rules.required && !value.trim()) {
+          if (rules.required) {
             errors[fieldName] = "Este campo es obligatorio";
           }
 
@@ -168,13 +177,13 @@ export default function CreateContract() {
             ] = `Debe ingresar al menos ${rules.minLength} caracteres`;
           }
 
-          if (rules.regex && !rules.regex.test(value.trim())) {
+          if (rules.regex && !rules.regex.test(value)) {
             errors[fieldName] = "Formano no válido";
           }
 
-          if (rules.numeric && !isNaN(formData[fieldName])) {
-            errors[fieldName] = "Formato no válido, requiere numérico";
-          }
+          // if (rules.numeric && !isNaN(formData[fieldName])) {
+          //   errors[fieldName] = "Formato no válido, requiere numérico";
+          // }
         }
       }
     }
@@ -183,6 +192,12 @@ export default function CreateContract() {
 
   return (
     <>
+      <button
+        onClick={(e) => mockData(e)}
+        className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Mock Data
+      </button>
       <form onSubmit={handleSubmit}>
         <div className="p-3 m-3">
           <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -197,7 +212,7 @@ export default function CreateContract() {
                 RUT
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.rut ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -219,7 +234,7 @@ export default function CreateContract() {
                 Nombre
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.name ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -241,7 +256,7 @@ export default function CreateContract() {
                 Telefono
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.phone ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -263,7 +278,7 @@ export default function CreateContract() {
                 Direccion
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.address ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -285,7 +300,7 @@ export default function CreateContract() {
                 Email
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.email ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -307,7 +322,7 @@ export default function CreateContract() {
                 Parentesco
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.kindship ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -336,7 +351,7 @@ export default function CreateContract() {
                 RUT
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.rutDeceased ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -358,7 +373,7 @@ export default function CreateContract() {
                 Nombre
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.nameDeceased ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -380,7 +395,7 @@ export default function CreateContract() {
                 Fecha fallecimiento
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.dateDeceased ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -401,7 +416,7 @@ export default function CreateContract() {
                 Tipo Beneficio
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.typeBenefit ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -423,7 +438,7 @@ export default function CreateContract() {
                 Monto Beneficio
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.amountBenefit ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -451,7 +466,7 @@ export default function CreateContract() {
                 Velatorio
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.wakeAddress ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -473,7 +488,7 @@ export default function CreateContract() {
                 Cementerio
               </label>
               <input
-                onChange={handleChange}
+                onChange={(e) => handleChange(e)}
                 className={`${
                   errors.cementery ? "border-red-500" : "border-gray-500"
                 } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
@@ -488,17 +503,22 @@ export default function CreateContract() {
             </div>
           </div>
           <div className="flex flex-row-reverse">
+            <input
+              className={`${
+                errors.price ? "border-red-500" : "border-gray-500"
+              } appearance-none block mx-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+              onChange={(e) => handleChange(e)}
+              name="price"
+              id="price"
+              value={inputs.price}
+              placeholder="Precio"
+            />
             <button
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
               Button
             </button>
-            <input
-              className="py-2 px-4 mr-3 rounded bg-gray-200 text-gray-700"
-              type="number"
-              placeholder="Precio"
-            />
           </div>
         </div>
       </form>

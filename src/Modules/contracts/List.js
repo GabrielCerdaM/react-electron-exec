@@ -2,8 +2,6 @@ import { Link, useLoaderData } from "react-router-dom";
 import Item from "./Item";
 
 export default function List() {
-  // const [contracts, setContracts] = useState([]);
-
   const { contracts } = useLoaderData();
 
   return (
@@ -29,17 +27,17 @@ export default function List() {
             </div>
           </div>
         </div>
-        <div>
-          {contracts.length > 0 ? (
-            contracts.map((contract) => (
-              <Item key={contract.dataValues.id} contract={contract} />
-            ))
-          ) : (
-            <>
-              <p>No hay registros</p>
-            </>
-          )}
-        </div>
+      </div>
+      <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border p-6 mt-3">
+        {contracts.length > 0 ? (
+          contracts.map((contract) => (
+            <Item key={contract.dataValues.id} contract={contract} />
+          ))
+        ) : (
+          <>
+            <p>No hay registros</p>
+          </>
+        )}
       </div>
     </>
   );

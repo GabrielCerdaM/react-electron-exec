@@ -10,8 +10,10 @@ class ContractRepository {
   }
   create(payload) {
     try {
-      console.log("ContractRepository ", { payload });
-      return Contract.create(payload);
+      return Contract.create({
+        ...payload,
+        dateDeceased: new Date(payload.dateDeceased),
+      });
     } catch (error) {
       console.log(error);
     }

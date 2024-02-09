@@ -7,14 +7,11 @@ export default function Layout({ children }) {
         <nav>
           <ul className="flex gap-5">
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/">Inicio</Link>
             </li>
             <li>
-              <Link to="/">View</Link>
+              <Link to="/">Contratos</Link>
             </li>
-            {/* <li>
-              <Link to="/"> Home3</Link>
-            </li> */}
           </ul>
         </nav>
       </header>

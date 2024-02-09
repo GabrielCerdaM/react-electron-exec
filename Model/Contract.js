@@ -20,6 +20,7 @@ Contract.init(
     amountBenefit: DataTypes.FLOAT,
     wakeAddress: DataTypes.STRING,
     cementery: DataTypes.STRING,
+    price: DataTypes.STRING,
   },
   {
     sequelize,

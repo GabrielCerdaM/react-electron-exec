@@ -20,7 +20,7 @@ const createWindow = () => {
 
   // const url = path.join(__dirname, 'build', 'index.html');
   try {
-    if (true) {
+    if (false) {
       window.loadURL("http://localhost:3000");
     } else {
       const url = path.join(__dirname, "build", "index.html");
@@ -36,9 +36,15 @@ const { ipcHandler } = require("./ipc/ipcHandler");
 
 ipcHandler();
 
-app.whenReady().then(async () => {
-  await syncDataBase();
-  await insertData();
+app.whenReady().then(() => {
+  syncDataBase()
+    .then(() => {
+      insertData()
+        .then()
+        .catch((error) => console.log(`SyncDataBaseError`, error));
+    })
+    .catch((error) => console.log(`InsertDataError`, error));
+
   createWindow();
 
   app.on("activate", () => {
