@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
-const { syncDataBase } = require('./db/index')
+const { syncDataBase } = require("./db/index");
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
@@ -35,13 +35,11 @@ const { ipcHandler } = require("./ipc/ipcHandler");
 ipcHandler();
 
 app.whenReady().then(() => {
-  // syncDataBase().then(resp => {
-
-  //   console.log({ resp })
-  //   createWindow();
-  // })
-  createWindow();
-
+  syncDataBase().then((resp) => {
+    console.log({ resp });
+    createWindow();
+  });
+  // createWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

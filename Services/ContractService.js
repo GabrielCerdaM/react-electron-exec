@@ -6,6 +6,11 @@ class ContractService {
     return ContractRepository.getAll();
   }
 
+  getAllFiltered(payload) {
+    // return await User.findAll();
+    return ContractRepository.getAllFiltered(payload);
+  }
+
   findById(id) {
     // return await User.findAll();
     return ContractRepository.findById(id);

@@ -2,9 +2,25 @@ import { Link, useLoaderData } from "react-router-dom";
 import Item from "./Item";
 import { useState } from "react";
 import { find } from "./utils/find";
+import useContract from "../../Components/hooks/useContract";
 
 export default function List() {
-  const { contracts } = useLoaderData();
+  const { contracts, getAllFiltered } = useContract();
+  const [search, setSearch] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({ e });
+    console.log({ search });
+    getAllFiltered(search);
+  };
+
+  const handleChange = (event) => {
+    const name = event.target.name;
+    let value = event.target.value;
+    setSearch(value);
+  };
+  // const { contracts } = useLoaderData();
   // const handleSubmit = (e) => {
   //   e.preventDefault()
   // }
@@ -22,21 +38,25 @@ export default function List() {
                 Aqui encontraras los ultimos contratos registrados
               </p>
             </div>
-            {/* <div className="w-full md:w-auto">
+            <div className="w-full md:w-auto">
               <form className="flex flex-row" onSubmit={handleSubmit}>
                 <input
+                  onChange={handleChange}
                   className={`p-3 mx-3 border-gray-500 appearance-none block bg-gray-200 text-gray-700 border rounded leading-tight focus:outline-none focus:bg-white`}
                   id="search"
                   name="search"
                   type="text"
+                  value={search}
                   placeholder="Buscador"
                 />
                 <button
                   type="submit"
                   className="px-5 block text-white bg-blue-700 rounded text-center"
-                >Search</button>
+                >
+                  Search
+                </button>
               </form>
-            </div> */}
+            </div>
             <div className="w-full md:w-auto">
               <Link
                 className="block text-white bg-blue-700 rounded p-3 text-center"
@@ -49,7 +69,7 @@ export default function List() {
         </div>
       </div>
       <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border p-6 mt-3">
-        {contracts.length > 0 ? (
+        {contracts !== null && contracts.length > 0 ? (
           contracts.map((contract) => (
             <Item key={contract.dataValues.id} contract={contract} />
           ))
