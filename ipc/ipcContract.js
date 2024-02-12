@@ -2,7 +2,12 @@ const { ipcMain } = require("electron");
 const ContractService = require("../Services/ContractService");
 
 function ipcContract() {
-  const handleFind = async () => {
+  const handleGetAll = async () => {
+    return await ContractService.getAll();
+  };
+
+  const handleFind = async (payload) => {
+    console.log('handleFind', { payload });
     return await ContractService.getAll();
   };
 
@@ -26,8 +31,11 @@ function ipcContract() {
     const { action, payload, id } = data;
     let result;
     switch (action) {
+      case "getAll":
+        result = handleGetAll();
+        break;
       case "find":
-        result = handleFind();
+        result = handleFind(payload);
         break;
       case "findById":
         result = handleFindById(id);
