@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useElectronDialog from "../../Components/DialogElectron";
+import useElectronDialog from "../../Components/useElectronDialog";
 
 export default function CreateContract() {
   const { confirmed, showDialog } = useElectronDialog();
@@ -148,10 +148,13 @@ export default function CreateContract() {
       console.log({ errors });
       return;
     }
-    await window.api.contractOperation({
+    const resp = await window.api.contractOperation({
       action: "create",
       payload: inputs,
     });
+
+    console.log({resp});
+    showDialog({message: "Creado correctamente",title:"Contrato creado"})
   };
 
   // Validation function

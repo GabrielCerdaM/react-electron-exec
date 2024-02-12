@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { findById } from "./utils/findById";
+import useElectronDialog from "../../Components/useElectronDialog";
 
 export default function ContractEdit() {
   const { contractId } = useParams();
 
+  const { showDialog } = useElectronDialog();
   const id = parseInt(contractId);
 
   const getContract = async (id) => {
@@ -40,8 +42,8 @@ export default function ContractEdit() {
       const dateObj = new Date(dataValues.dateDeceased);
 
       // Obtener el formato YYYY-MM-DD
-      const formattedDate = dateObj.toISOString().slice(0,10);
-      console.log({formattedDate});
+      const formattedDate = dateObj.toISOString().slice(0, 10);
+      console.log({ formattedDate });
       // Actualizar los valores del estado, incluyendo la fecha adaptada
       setInputs(values => ({ ...values, ...dataValues, dateDeceased: formattedDate }));
     };
@@ -162,11 +164,13 @@ export default function ContractEdit() {
       console.log({ errors });
       return;
     }
-    await window.api.contractOperation({
+    const resp = await window.api.contractOperation({
       action: "update",
       payload: inputs,
       id: inputs.id
     });
+    console.log({ resp });
+    showDialog({ message: "Editado correctamente", title: "Contrato editado" })
   };
 
   // Validation function

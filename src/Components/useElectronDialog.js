@@ -3,17 +3,16 @@ import { useEffect, useState } from 'react';
 const useElectronDialog = () => {
     const [confirmed, setConfirmed] = useState(null);
 
-    const showDialog = async () => {
+    const showDialog = async ({ message = "", title = "Alerta de sistema" }) => {
         try {
             const dialogType = 'showMessageBoxSync';
             const dialogConfig = {
-                message: "Alerta",
+                message,
                 type: "warning",
-                buttons: ["Cancelar", "Aceptar"],
-                defaultId: 0,
-                title: "Alerta de sistema",
+                buttons: ["Aceptar"],
+                defaultId: 1,
+                title,
                 detail: "",
-                cancelId: 0,
             }
 
             const response = await window.api.dialog(dialogType, dialogConfig);
