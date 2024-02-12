@@ -1,8 +1,11 @@
 import { useState } from "react";
 import useElectronDialog from "../../Components/useElectronDialog";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateContract() {
   const { confirmed, showDialog } = useElectronDialog();
+
+  const navigate = useNavigate();
 
   const mockData = (e) => {
     e.preventDefault();
@@ -153,8 +156,9 @@ export default function CreateContract() {
       payload: inputs,
     });
 
-    console.log({resp});
-    showDialog({message: "Creado correctamente",title:"Contrato creado"})
+    console.log({ resp });
+    showDialog({ message: "Creado correctamente", title: "Contrato creado" })
+    navigate('/')
   };
 
   // Validation function

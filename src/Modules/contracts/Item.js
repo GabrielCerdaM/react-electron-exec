@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteById } from "./utils/deleteById";
 export default function Item({ contract }) {
+  const navigate = useNavigate();
+
   const { dataValues } = contract;
 
   const deleteItem = async (id) => {
@@ -28,43 +30,60 @@ export default function Item({ contract }) {
     );
     console.log({ confirmed });
     if (confirmed === 1) {
-      deleteItem(id);
+      await deleteItem(id);
+      navigate('/')
     }
   };
   return (
     <>
       <div className="bg-emerald-200 rounded p-5 m-5">
-        <div className="">
-          <div className="">
-            <h1>
-              {dataValues.id} Nombre cliente:{" "}
-              <strong> {dataValues.name}</strong>
-            </h1>
-          </div>
+        <div className="text-center">
+          <p>
+            N Factura:
+            <strong> {dataValues.bill}</strong>
+          </p>
         </div>
-        {/* <hr></hr> */}
-        {/* <p>_________________________________</p> */}
-        <div>
+        <div className="flex pt-5 justify-around gap-5">
+          <div className="">
+            <p>
+              Nombre cliente:
+              <strong> {dataValues.name}</strong>
+            </p>
+            <p>
+              Telefono:
+              <strong> {dataValues.phone}</strong>
+            </p>
+            <p>
+              Direccion:
+              <strong> {dataValues.address}</strong>
+            </p>
+            <p>
+              parentezco:
+              <strong> {dataValues.kindship}</strong>
+            </p>
+          </div>
           <div>
-            <h1>
+            <p>
               Nombre fallecido: <strong>{dataValues.nameDeceased}</strong>
-            </h1>
+            </p>
             <p>
               Rut fallecido: <strong>{dataValues.rutDeceased}</strong>
             </p>
           </div>
+        </div>
+        <div className="text-center pt-5">
           <div>
-            <h1>
+            <p>
               Velatorio:
               <strong> {dataValues.wakeAddress}</strong>
-            </h1>
+            </p>
             <p>
               Cementerio:
               <strong> {dataValues.cementery}</strong>
             </p>
           </div>
         </div>
-        <div className="flex justify-center items-center gap-5 pt-3">
+        <div className="flex justify-center items-center gap-5 pt-5">
           <Link to={`/contract/${dataValues.id}`}>Ver</Link>
           <form onSubmit={(event) => handleSubmit(event, dataValues.id)}>
             <button type="submit">Eliminar</button>

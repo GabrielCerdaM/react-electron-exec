@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { findById } from "./utils/findById";
 import useElectronDialog from "../../Components/useElectronDialog";
 
 export default function ContractEdit() {
+  const navigate = useNavigate();
+
   const { contractId } = useParams();
 
   const { showDialog } = useElectronDialog();
@@ -171,6 +173,7 @@ export default function ContractEdit() {
     });
     console.log({ resp });
     showDialog({ message: "Editado correctamente", title: "Contrato editado" })
+    navigate('/')
   };
 
   // Validation function
