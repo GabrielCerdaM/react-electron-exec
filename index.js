@@ -35,11 +35,12 @@ const { ipcHandler } = require("./ipc/ipcHandler");
 ipcHandler();
 
 app.whenReady().then(() => {
-  syncDataBase().then(resp => {
+  // syncDataBase().then(resp => {
 
-    console.log({ resp })
-    createWindow();
-  })
+  //   console.log({ resp })
+  //   createWindow();
+  // })
+  createWindow();
 
 
   app.on("activate", () => {
