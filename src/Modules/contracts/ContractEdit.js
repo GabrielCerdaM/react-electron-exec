@@ -13,6 +13,7 @@ export default function ContractEdit() {
 
   const [inputs, setInputs] = useState({
     id: "",
+    bill: "",
     rut: "",
     name: "",
     phone: "",
@@ -33,19 +34,32 @@ export default function ContractEdit() {
     const fetchContract = async () => {
       const contract = await getContract(id);
       const { dataValues } = contract;
-      setInputs((values) => ({ ...values, ...dataValues }));
+      console.log({ dataValues });
+      // Adaptar el formato de la fecha si existe
+      // Convertir la fecha a un objeto Date
+      const dateObj = new Date(dataValues.dateDeceased);
+
+      // Obtener el formato YYYY-MM-DD
+      const formattedDate = dateObj.toISOString().slice(0,10);
+      console.log({formattedDate});
+      // Actualizar los valores del estado, incluyendo la fecha adaptada
+      setInputs(values => ({ ...values, ...dataValues, dateDeceased: formattedDate }));
     };
+
     fetchContract();
-    return () => {};
+    return () => { };
   }, [id]);
 
   const validationRules = {
     id: {
       required: true,
     },
+    bill: {
+      required: false,
+    },
     rut: {
       required: true,
-      regex: /^[0-9]{7,8}-[0-9Kk]$/, // Example regex for a Chilean RUT
+      regex: /^(\d{1,3}\.)+(\d{3}\.)+\d{3}-[\dK]$/, // Example regex for a Chilean RUT
     },
     name: {
       required: true,
@@ -99,6 +113,7 @@ export default function ContractEdit() {
 
   const [errors, setErrors] = useState({
     id: "",
+    bill: "",
     rut: "",
     name: "",
     phone: "",
@@ -116,24 +131,18 @@ export default function ContractEdit() {
   });
 
   const formatRut = (rut) => {
-    // Remove any existing dots and hyphen
-    const cleanRut = rut.replace(/[\.-]/g, "");
+    // Eliminar todos los caracteres que no sean números o "K" o "k"
+    rut = rut.replace(/[^\dKk]/g, "");
 
-    // Split into number and check digit
-    const numberPart = cleanRut.slice(0, -1);
-    const checkDigit = cleanRut.slice(-1);
+    // Si el RUT es "K" o "k", lo devolvemos directamente
+    if (rut.toUpperCase() === 'K') {
+      return 'K';
+    }
 
-    // Add dots to the number part
-    const formattedNumberPart = numberPart.replace(
-      /\B(?=(\d{3})+(?!\d))/g,
-      "."
-    );
-
-    // Combine the formatted number part and check digit
-    const formattedRut = `${formattedNumberPart}-${checkDigit}`;
-
-    return formattedRut;
-  };
+    // Formatear el RUT
+    let rutFormateado = rut.replace(/^(\d{1,2})(\d{3})(\d{3})([\dKk])$/, '$1.$2.$3-$4');
+    return rutFormateado;
+  }
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -147,24 +156,22 @@ export default function ContractEdit() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const errors = validateForm(inputs);
-    // if (errors) {
-    //   setErrors(errors);
-    //   console.log({ errors });
-    //   return;
-    // }
-    const resp = await window.api.contractOperation({
+    const errors = validateForm(inputs);
+    if (Object.getOwnPropertyNames(errors).length > 0) {
+      setErrors(errors);
+      console.log({ errors });
+      return;
+    }
+    await window.api.contractOperation({
       action: "update",
       payload: inputs,
-      id: inputs.id,
+      id: inputs.id
     });
-    console.log({ resp });
   };
 
   // Validation function
   const validateForm = (formData) => {
     const errors = {};
-    console.log({ formData });
     // Iterate over each input field in formData
     for (const fieldName in formData) {
       if (formData.hasOwnProperty(fieldName)) {
@@ -173,22 +180,14 @@ export default function ContractEdit() {
 
         // Check each validation rule for the current field
         if (rules) {
-          if (rules.required) {
-            errors[fieldName] = "Este campo es obligatorio";
-          }
-
           if (rules.minLength && value.trim().length < rules.minLength) {
             errors[
               fieldName
             ] = `Debe ingresar al menos ${rules.minLength} caracteres`;
           }
 
-          if (rules.regex && !rules.regex.test(value.trim())) {
+          if (rules.regex && !rules.regex.test(value)) {
             errors[fieldName] = "Formano no válido";
-          }
-
-          if (rules.numeric && !isNaN(formData[fieldName])) {
-            errors[fieldName] = "Formato no válido, requiere numérico";
           }
         }
       }
@@ -199,6 +198,34 @@ export default function ContractEdit() {
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <div className="p-3 m-3">
+          <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            Factura
+          </h1>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="rut"
+              >
+                Numero Factura
+              </label>
+              <input
+                onChange={(e) => handleChange(e)}
+                className={`${errors.bill ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                id="bill"
+                name="bill"
+                type="text"
+                value={inputs.bill}
+                placeholder="bill"
+              />
+              <p className="text-red-500 text-xs italic">
+                {errors.bill ? errors.bill : ""}
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="p-3 m-3">
           <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
             Cliente
@@ -213,9 +240,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.rut ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.rut ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="rut"
                 name="rut"
                 type="text"
@@ -235,9 +261,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.name ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.name ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="name"
                 name="name"
                 type="text"
@@ -257,9 +282,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.phone ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.phone ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="phone"
                 name="phone"
                 type="text"
@@ -279,9 +303,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.address ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.address ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="address"
                 name="address"
                 type="text"
@@ -301,9 +324,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.email ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.email ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="email"
                 name="email"
                 type="text"
@@ -323,9 +345,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.kindship ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.kindship ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="kindship"
                 name="kindship"
                 type="text"
@@ -352,9 +373,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.rutDeceased ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.rutDeceased ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="rutDeceased"
                 name="rutDeceased"
                 type="text"
@@ -374,9 +394,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.nameDeceased ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.nameDeceased ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="nameDeceased"
                 name="nameDeceased"
                 type="text"
@@ -396,9 +415,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.dateDeceased ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.dateDeceased ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="dateDeceased"
                 name="dateDeceased"
                 value={inputs.dateDeceased}
@@ -417,9 +435,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.typeBenefit ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.typeBenefit ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="typeBenefit"
                 name="typeBenefit"
                 value={inputs.typeBenefit}
@@ -439,9 +456,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.amountBenefit ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.amountBenefit ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="amountBenefit"
                 name="amountBenefit"
                 value={inputs.amountBenefit}
@@ -467,9 +483,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.wakeAddress ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.wakeAddress ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="wakeAddress"
                 name="wakeAddress"
                 value={inputs.wakeAddress}
@@ -489,9 +504,8 @@ export default function ContractEdit() {
               </label>
               <input
                 onChange={handleChange}
-                className={`${
-                  errors.cementery ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.cementery ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="cementery"
                 name="cementery"
                 value={inputs.cementery}
@@ -511,9 +525,8 @@ export default function ContractEdit() {
             </button>
             <input
               onChange={handleChange}
-              className={`${
-                errors.price ? "border-red-500" : "border-gray-500"
-              } appearance-none block bg-gray-200 text-gray-700 border rounded py-3 px-4 mx-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+              className={`${errors.price ? "border-red-500" : "border-gray-500"
+                } appearance-none block bg-gray-200 text-gray-700 border rounded py-3 px-4 mx-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
               id="price"
               name="price"
               type="number"

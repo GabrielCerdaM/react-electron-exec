@@ -2,12 +2,13 @@
 const { DataTypes, Model } = require("sequelize");
 const { sequelize } = require("../sequelize"); // Asegúrate de configurar esto correctamente
 // Define la clase del modelo
-class Contract extends Model {}
+class Contract extends Model { }
 
 // Define el modelo utilizando los campos proporcionados
 Contract.init(
   {
     rut: DataTypes.STRING,
+    bill: DataTypes.STRING,
     name: DataTypes.STRING,
     phone: DataTypes.STRING,
     address: DataTypes.STRING,

@@ -2,11 +2,12 @@ import { useState } from "react";
 import useElectronDialog from "../../Components/DialogElectron";
 
 export default function CreateContract() {
-  const {confirmed,showDialog} = useElectronDialog();
+  const { confirmed, showDialog } = useElectronDialog();
 
   const mockData = (e) => {
     e.preventDefault();
     const mock = {
+      bill: "10",
       rut: "19.412.216-0",
       name: "Nombre de prueba",
       phone: "999999999",
@@ -26,6 +27,7 @@ export default function CreateContract() {
   };
 
   const [inputs, setInputs] = useState({
+    bill: "",
     rut: "",
     name: "",
     phone: "",
@@ -43,6 +45,9 @@ export default function CreateContract() {
   });
 
   const validationRules = {
+    bill: {
+      required: false,
+    },
     rut: {
       required: true,
       regex: /^(\d{1,3}\.)+(\d{3}\.)+\d{3}-[\dK]$/, // Example regex for a Chilean RUT
@@ -95,6 +100,7 @@ export default function CreateContract() {
   };
 
   const [errors, setErrors] = useState({
+    bill: "",
     rut: "",
     name: "",
     phone: "",
@@ -142,15 +148,10 @@ export default function CreateContract() {
       console.log({ errors });
       return;
     }
-    const resp = await window.api.contractOperation({
+    await window.api.contractOperation({
       action: "create",
       payload: inputs,
     });
-    if (resp.message) {
-      return;
-    }
-
-    console.log({ resp,confirmed });
   };
 
   // Validation function
@@ -195,6 +196,34 @@ export default function CreateContract() {
         Mock Data
       </button>
       <form onSubmit={handleSubmit}>
+        <div className="p-3 m-3">
+          <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+            Factura
+          </h1>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="rut"
+              >
+                Numero Factura
+              </label>
+              <input
+                onChange={(e) => handleChange(e)}
+                className={`${errors.bill ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                id="bill"
+                name="bill"
+                type="text"
+                value={inputs.bill}
+                placeholder="bill"
+              />
+              <p className="text-red-500 text-xs italic">
+                {errors.bill ? errors.bill : ""}
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="p-3 m-3">
           <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
             Cliente
