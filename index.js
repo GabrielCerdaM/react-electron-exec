@@ -1,8 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
 
-const { insertData, syncDataBase } = require("./db/index");
-
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
@@ -20,7 +18,7 @@ const createWindow = () => {
 
   // const url = path.join(__dirname, 'build', 'index.html');
   try {
-    if (false) {
+    if (true) {
       window.loadURL("http://localhost:3000");
     } else {
       const url = path.join(__dirname, "build", "index.html");
@@ -37,13 +35,6 @@ const { ipcHandler } = require("./ipc/ipcHandler");
 ipcHandler();
 
 app.whenReady().then(() => {
-  syncDataBase()
-    .then(() => {
-      insertData()
-        .then()
-        .catch((error) => console.log(`SyncDataBaseError`, error));
-    })
-    .catch((error) => console.log(`InsertDataError`, error));
 
   createWindow();
 

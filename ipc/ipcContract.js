@@ -23,7 +23,6 @@ function ipcContract() {
   // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // In the main process
   ipcMain.handle("contract-operation", (event, data) => {
-    console.log({ event });
     const { action, payload, id } = data;
     let result;
     switch (action) {

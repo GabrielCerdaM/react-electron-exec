@@ -4,7 +4,7 @@ config();
 // Option 1: Passing a connection URI
 // how .exe app affect with config?
 
-const sequelize = new Sequelize("electron", "root", "olxdev9!", {
+const sequelize = new Sequelize("electron", "root", "mysqldb", {
   host: "127.0.0.1",
   dialect:
     "mysql" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
@@ -21,10 +21,4 @@ const testConnection = async () => {
   sequelize.close();
   return false;
 };
-
-(async () => {
-  await sequelize.sync({ force: true });
-  console.log("All models were synchronized successfully.");
-})();
-
 module.exports = { sequelize, testConnection };
