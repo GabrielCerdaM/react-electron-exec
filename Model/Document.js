@@ -1,19 +1,21 @@
 const { Model, DataTypes } = require("sequelize");
 const { sequelize } = require("../sequelize");
 
-class Document extends Model { }
+class Document extends Model {}
 
-Document.init({
-
+Document.init(
+  {
     path: DataTypes.STRING,
+    name: DataTypes.STRING,
     ext: DataTypes.STRING,
-}, {
+  },
+  {
     sequelize,
     modelName: "Document",
-    timestamps: false
-})
+    timestamps: false,
+  }
+);
 
 console.log("The table for the Contract Document was just (re)created!");
 
-
-module.exports = {Document }
+module.exports = { Document };

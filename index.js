@@ -1,6 +1,6 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
-const { syncDataBase } = require("./db/index");
+const { syncDataBase, insertData } = require("./db/index");
 const createWindow = () => {
   const window = new BrowserWindow({
     width: 800,
@@ -36,7 +36,12 @@ ipcHandler();
 
 app.whenReady().then(() => {
   syncDataBase().then((resp) => {
-    console.log({ resp });
+    console.log("syncDataBase", { resp });
+    insertData()
+      .then((resp) => {
+        console.log("insertData", { resp });
+      })
+      .catch((error) => console.log({ error }));
     createWindow();
   });
   // createWindow();

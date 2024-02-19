@@ -125,14 +125,17 @@ export default function CreateContract() {
     rut = rut.replace(/[^\dKk]/g, "");
 
     // Si el RUT es "K" o "k", lo devolvemos directamente
-    if (rut.toUpperCase() === 'K') {
-      return 'K';
+    if (rut.toUpperCase() === "K") {
+      return "K";
     }
 
     // Formatear el RUT
-    let rutFormateado = rut.replace(/^(\d{1,2})(\d{3})(\d{3})([\dKk])$/, '$1.$2.$3-$4');
+    let rutFormateado = rut.replace(
+      /^(\d{1,2})(\d{3})(\d{3})([\dKk])$/,
+      "$1.$2.$3-$4"
+    );
     return rutFormateado;
-  }
+  };
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -157,8 +160,8 @@ export default function CreateContract() {
     });
 
     console.log({ resp });
-    showDialog({ message: "Creado correctamente", title: "Contrato creado" })
-    navigate('/')
+    showDialog({ message: "Creado correctamente", title: "Contrato creado" });
+    navigate("/");
   };
 
   // Validation function
@@ -191,7 +194,6 @@ export default function CreateContract() {
       }
     }
     return errors;
-
   };
 
   return (
@@ -217,8 +219,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.bill ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${
+                  errors.bill ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="bill"
                 name="bill"
                 type="text"
@@ -245,8 +248,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.rut ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${
+                  errors.rut ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="rut"
                 name="rut"
                 type="text"
@@ -266,8 +270,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.name ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.name ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="name"
                 name="name"
                 type="text"
@@ -287,8 +292,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.phone ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${
+                  errors.phone ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="phone"
                 name="phone"
                 type="text"
@@ -308,8 +314,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.address ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.address ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="address"
                 name="address"
                 type="text"
@@ -329,8 +336,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.email ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${
+                  errors.email ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="email"
                 name="email"
                 type="text"
@@ -350,8 +358,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.kindship ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.kindship ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="kindship"
                 name="kindship"
                 type="text"
@@ -378,8 +387,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.rutDeceased ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${
+                  errors.rutDeceased ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="rutDeceased"
                 name="rutDeceased"
                 type="text"
@@ -399,8 +409,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.nameDeceased ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.nameDeceased ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="nameDeceased"
                 name="nameDeceased"
                 type="text"
@@ -420,8 +431,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.dateDeceased ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.dateDeceased ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="dateDeceased"
                 name="dateDeceased"
                 value={inputs.dateDeceased}
@@ -440,8 +452,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.typeBenefit ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.typeBenefit ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="typeBenefit"
                 name="typeBenefit"
                 value={inputs.typeBenefit}
@@ -461,8 +474,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.amountBenefit ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.amountBenefit ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="amountBenefit"
                 name="amountBenefit"
                 value={inputs.amountBenefit}
@@ -488,8 +502,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.wakeAddress ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.wakeAddress ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="wakeAddress"
                 name="wakeAddress"
                 value={inputs.wakeAddress}
@@ -509,8 +524,9 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${errors.cementery ? "border-red-500" : "border-gray-500"
-                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${
+                  errors.cementery ? "border-red-500" : "border-gray-500"
+                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="cementery"
                 name="cementery"
                 value={inputs.cementery}
@@ -523,8 +539,9 @@ export default function CreateContract() {
           </div>
           <div className="flex flex-row-reverse">
             <input
-              className={`${errors.price ? "border-red-500" : "border-gray-500"
-                } appearance-none block mx-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+              className={`${
+                errors.price ? "border-red-500" : "border-gray-500"
+              } appearance-none block mx-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
               onChange={(e) => handleChange(e)}
               name="price"
               id="price"
@@ -535,7 +552,7 @@ export default function CreateContract() {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             >
-              Button
+              Crear
             </button>
           </div>
         </div>

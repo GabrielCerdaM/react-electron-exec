@@ -10,7 +10,7 @@ export default function Layout({ children }) {
               <Link to="/">Inicio</Link>
             </li>
             {/* <li>
-              <Link to="/">Contratos</Link>
+              <Link to="/docs">Documents</Link>
             </li> */}
           </ul>
         </nav>

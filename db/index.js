@@ -8,7 +8,7 @@ async function syncDataBase() {
   try {
     Document.belongsTo(Contract);
     Payment.belongsTo(Contract);
-    Contract.hasMany(Document);
+    Contract.hasMany(Document, { as: "documents" });
     Contract.hasMany(Payment);
 
     await sequelize.sync({ force: true }); // El uso de force: true eliminará las tablas existentes (ten cuidado en producción)
@@ -25,7 +25,7 @@ async function insertData() {
       email: "email@email.cl",
     });
 
-    const array = [
+    const contracts = [
       {
         rut: "19.412.216-0",
         name: "Nombre de prueba asdasd",
@@ -41,6 +41,7 @@ async function insertData() {
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
         price: 1000,
+        bill: 100,
       },
       {
         rut: "19.412.216-0",
@@ -57,6 +58,7 @@ async function insertData() {
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
         price: 1000,
+        bill: 100,
       },
       {
         rut: "19.412.216-0",
@@ -73,12 +75,37 @@ async function insertData() {
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
         price: 1000,
+        bill: 100,
       },
     ];
-    array.forEach(async (element) => {
-      const newContract = await Contract.create(element);
-      console.log({ newContract });
+
+    const documents = [
+      {
+        name: "document name",
+        path: "document path",
+        ext: "pdf",
+        ContractId: 1,
+      },
+    ];
+
+    contracts.forEach(async (element) => {
+      try {
+        const newContract = await Contract.create(element, {});
+      } catch (error) {
+        console.log("insert", { error });
+      }
     });
+
+    documents.forEach(async (doc, index) => {
+      try {
+        console.log({ doc });
+        const newDoc = await Document.create(doc);
+        console.log({ newDoc });
+      } catch (error) {
+        console.log({ error });
+      }
+    });
+
     console.log({ newUser });
     console.log("insertData");
   } catch (error) {

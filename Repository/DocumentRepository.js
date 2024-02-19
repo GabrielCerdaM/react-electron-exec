@@ -1,10 +1,12 @@
-const { Document } = require('../Model/Document')
+const { Document } = require("../Model/Document");
 
 class DocumentRepository {
-
-    async getAll () {
-        return await Document.findAll();
-    }
+  async getAll() {
+    return await Document.findAll();
+  }
+  async findById(payload) {
+    return await Document.findByPk(payload);
+  }
 }
 
 module.exports = new DocumentRepository();

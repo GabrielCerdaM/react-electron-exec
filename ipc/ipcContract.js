@@ -1,6 +1,5 @@
 const { ipcMain } = require("electron");
 const ContractService = require("../Services/ContractService");
-const { Contract } = require("../Model/Contract");
 
 function ipcContract() {
   const handleGetAll = async () => {

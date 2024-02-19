@@ -31,7 +31,7 @@ export default function Item({ contract }) {
     console.log({ confirmed });
     if (confirmed === 1) {
       await deleteItem(id);
-      navigate('/')
+      navigate("/");
     }
   };
   return (
@@ -84,7 +84,8 @@ export default function Item({ contract }) {
           </div>
         </div>
         <div className="flex justify-center items-center gap-5 pt-5">
-          <Link to={`/contract/${dataValues.id}`}>Ver</Link>
+          <Link to={`/contract/${dataValues.id}`}>Ver Detalle</Link>
+          <Link to={`/document/${dataValues.id}`}>Ver Documentos</Link>
           <form onSubmit={(event) => handleSubmit(event, dataValues.id)}>
             <button type="submit">Eliminar</button>
           </form>
