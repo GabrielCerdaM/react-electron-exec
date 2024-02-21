@@ -1,6 +1,4 @@
-const { app } = require("electron");
 const DocumentRepository = require("../Repository/DocumentRepository");
-const { existsSync, mkdir, copyFile, readFileSync } = require("fs");
 
 class DocumentService {
   getAll() {
@@ -9,8 +7,6 @@ class DocumentService {
 
   async create(payload) {
     // const path = require("path");
-    const { path, name } = payload;
-    console.log({ path, name });
     return DocumentRepository.create(payload);
     // const fileContent = readFileSync(path);
 
@@ -34,8 +30,8 @@ class DocumentService {
     // console.log({ newFile });
   }
 
-  async findById(payload) {
-    return await DocumentRepository.findById(payload);
+  findByContractId(id) {
+    return DocumentRepository.findByContractId(id);
   }
 }
 

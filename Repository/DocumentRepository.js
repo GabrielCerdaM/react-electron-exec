@@ -4,8 +4,12 @@ class DocumentRepository {
   async getAll() {
     return await Document.findAll();
   }
-  async findById(payload) {
-    return await Document.findByPk(payload);
+  async findByContractId(id) {
+    return await Document.findAll({
+      where: {
+        ContractId: id
+      },
+    })
   }
 
   async create(payload) {

@@ -1,4 +1,5 @@
 export function List({ docs, handleDelete }) {
+  console.log({docsList:docs});
   return (
     <section className="bg-gray-300 border border-sky-500 p-3">
       <table className="w-full mx-auto">
@@ -10,7 +11,7 @@ export function List({ docs, handleDelete }) {
         </thead>
         <tbody>
           {docs &&
-            [...docs].map((doc, index) => {
+            docs.map((doc, index) => {
               return (
                 <tr className="border" key={doc.name + "_" + index}>
                   <td className="pl-3">{doc.name}</td>

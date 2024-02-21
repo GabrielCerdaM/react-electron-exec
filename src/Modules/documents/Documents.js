@@ -5,7 +5,7 @@ import useDocument from "../../Components/hooks/useDocument";
 export function Documents() {
   const { documents, getDocuments } = useDocument();
 
-  const [docs, setDocs] = useState([{ name: "asd", path: "asd" }]);
+  const [docs, setDocs] = useState(null);
 
   const { contractId } = useParams();
 
@@ -17,7 +17,7 @@ export function Documents() {
     try {
       e.preventDefault();
 
-      const payload = [...docs].map((doc) => ({
+      const payload = docs.map((doc) => ({
         path: doc.path,
         name: doc.name,
       }));
@@ -39,11 +39,11 @@ export function Documents() {
   };
 
   const handleChange = (e) => {
-    setDocs(e.target.files);
+    setDocs([...e.target.files]);
   };
 
   const handleDelete = (indexDeleted) => {
-    const newArray = [...docs].filter((doc, index) => {
+    const newArray = docs.filter((doc, index) => {
       console.log({ doc, index });
       return index !== indexDeleted;
     });

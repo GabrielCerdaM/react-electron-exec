@@ -1,23 +1,20 @@
-import { findById } from "../../Modules/documents/utils/findById";
+import { findByContractId } from "../../Modules/documents/utils/findByContractId";
 
 const { useEffect, useState } = require("react");
 
 const useDocument = (id) => {
   const [documents, setDocuments] = useState(null);
 
-  const getDocuments = async (id) => {
-    // const resp = await findById(id);
-    const resp = [
-      { path: "path example", name: "IMG_3014.JPG" },
-      { path: "path example", name: "IMG_3015.JPG" },
-      { path: "path example", name: "IMG_3016.JPG" },
-      { path: "path example", name: "IMG_3017.JPG" },
-      { path: "path example", name: "IMG_3018.JPG" },
-      { path: "path example", name: "IMG_3019.JPG" },
-      { path: "path example", name: "IMG_3010.JPG" },
-    ];
-    console.log({ resp });
-    setDocuments(resp);
+  const getDocuments = (id) => {
+    if (id) {
+      findByContractId(id).then(resp => {
+        console.log('findByContractId', { resp });
+        if(resp){
+          const data = resp.map(doc => doc.dataValues)
+          setDocuments(data)
+        }
+      }).catch(error=>console.log({error}))
+    }
   };
 
   useEffect(() => {

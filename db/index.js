@@ -86,6 +86,12 @@ async function insertData() {
         ext: "pdf",
         ContractId: 1,
       },
+      {
+        name: "document name",
+        path: "document path",
+        ext: "pdf",
+        ContractId: 1,
+      },
     ];
 
     contracts.forEach(async (element) => {

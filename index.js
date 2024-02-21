@@ -18,7 +18,7 @@ const createWindow = () => {
 
   // const url = path.join(__dirname, 'build', 'index.html');
   try {
-    if (true) {
+    if (false) {
       window.loadURL("http://localhost:3000");
     } else {
       const url = path.join(__dirname, "build", "index.html");
@@ -37,11 +37,11 @@ ipcHandler();
 app.whenReady().then(() => {
   syncDataBase().then((resp) => {
     console.log("syncDataBase", { resp });
-    insertData()
-      .then((resp) => {
-        console.log("insertData", { resp });
-      })
-      .catch((error) => console.log({ error }));
+    // insertData()
+    //   .then((resp) => {
+    //     console.log("insertData", { resp });
+    //   })
+    //   .catch((error) => console.log({ error }));
     createWindow();
   });
   // createWindow();

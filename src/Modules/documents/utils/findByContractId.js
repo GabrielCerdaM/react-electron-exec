@@ -1,7 +1,7 @@
-export async function findById(id) {
+export async function findByContractId(id) {
   try {
     return await window.api.documentOperation({
-      action: "findById",
+      action: "findByContractId",
       payload: null,
       id: id,
     });
