@@ -23,7 +23,7 @@ export const routes = createHashRouter([
         element: <CreateContract />,
       },
       {
-        path: "/document/:documentId",
+        path: "/document/:contractId",
         element: <Documents />,
       },
     ],

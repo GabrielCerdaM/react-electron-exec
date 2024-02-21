@@ -91,7 +91,7 @@ export default function ContractEdit() {
     },
     rutDeceased: {
       required: true,
-      regex: /^[0-9]{7,8}-[0-9Kk]$/, // Example regex for a Chilean RUT
+      regex: /^(\d{1,3}\.)+(\d{3}\.)+\d{3}-[\dK]$/, // Example regex for a Chilean RUT
     },
     nameDeceased: {
       required: true,
@@ -143,9 +143,9 @@ export default function ContractEdit() {
     rut = rut.replace(/[^\dKk]/g, "");
 
     // Si el RUT es "K" o "k", lo devolvemos directamente
-    if (rut.toUpperCase() === "K") {
-      return "K";
-    }
+    // if (rut.toUpperCase() === "K") {
+    //   return "K";
+    // }
 
     // Formatear el RUT
     let rutFormateado = rut.replace(

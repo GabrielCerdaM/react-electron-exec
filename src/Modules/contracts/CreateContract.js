@@ -9,6 +9,7 @@ export default function CreateContract() {
 
   const mockData = (e) => {
     e.preventDefault();
+
     const mock = {
       bill: "10",
       rut: "19.412.216-0",

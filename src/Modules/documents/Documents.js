@@ -7,28 +7,35 @@ export function Documents() {
 
   const [docs, setDocs] = useState([{ name: "asd", path: "asd" }]);
 
-  const { documentId } = useParams();
+  const { contractId } = useParams();
 
   useEffect(() => {
-    console.log({ documentId });
-    getDocuments(documentId);
-  }, [documentId]);
+    getDocuments(contractId);
+  }, [contractId]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const payload = docs.map((doc) => ({
-      path: doc.path,
-      name: doc.name,
-    }));
+      const payload = [...docs].map((doc) => ({
+        path: doc.path,
+        name: doc.name,
+      }));
 
-    const resp = await window.api.documentOperation({
-      action: "add",
-      payload,
-      id: null,
-    });
+      if (payload.length < 1) {
+        throw new Error("No se han seleccionado archivos");
+      }
 
-    console.log({ resp });
+      const resp = await window.api.documentOperation({
+        action: "add",
+        payload,
+        id: contractId,
+      });
+
+      console.log({ resp });
+    } catch (error) {
+      console.log({ error });
+    }
   };
 
   const handleChange = (e) => {
@@ -67,7 +74,7 @@ export function Documents() {
               <List docs={docs} handleDelete={handleDelete} />
             </div>
           </div>
-          {/* <button className="pt-5">Guardar</button> */}
+          <button className="pt-5">Guardar</button>
         </form>
       </section>
     </>

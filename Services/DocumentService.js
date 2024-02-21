@@ -1,24 +1,27 @@
 const { app } = require("electron");
 const DocumentRepository = require("../Repository/DocumentRepository");
-const { existsSync, mkdir, copyFile } = require("fs");
+const { existsSync, mkdir, copyFile, readFileSync } = require("fs");
+
 class DocumentService {
   getAll() {
     return DocumentRepository.getAll();
   }
 
   async create(payload) {
+    // const path = require("path");
     const { path, name } = payload;
-    console.log({ path, name, __dirname });
-    const fileContent = fs.readFileSync(path);
+    console.log({ path, name });
+    return DocumentRepository.create(payload);
+    // const fileContent = readFileSync(path);
 
     // Guardar el archivo PDF donde sea necesario
     // Por ejemplo, en la carpeta 'downloads'
-    const fileName = path.basename(path);
-    console.log({ fileName });
+    // const fileName = path.basename(path);
+    // console.log({ fileName });
 
-    const destinationPath = path.join(app.getPath("downloads"), fileName);
+    // const destinationPath = path.join(app.getPath("downloads"), fileName);
 
-    fs.writeFileSync(destinationPath, fileContent);
+    // fs.writeFileSync(destinationPath, fileContent);
 
     // mkdir("./archivos", { recursive: true }, (err) => {
     //   if (err) console.log({ err });
@@ -29,7 +32,6 @@ class DocumentService {
     // });
 
     // console.log({ newFile });
-    // return DocumentRepository.save(payload);
   }
 
   async findById(payload) {

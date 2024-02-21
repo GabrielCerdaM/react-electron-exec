@@ -7,6 +7,10 @@ class DocumentRepository {
   async findById(payload) {
     return await Document.findByPk(payload);
   }
+
+  async create(payload) {
+    return await Document.create(payload);
+  }
 }
 
 module.exports = new DocumentRepository();
