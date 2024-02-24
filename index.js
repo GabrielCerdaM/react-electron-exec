@@ -37,11 +37,11 @@ ipcHandler();
 app.whenReady().then(() => {
   syncDataBase().then((resp) => {
     console.log("syncDataBase", { resp });
-    // insertData()
-    //   .then((resp) => {
-    //     console.log("insertData", { resp });
-    //   })
-    //   .catch((error) => console.log({ error }));
+    insertData()
+      .then((resp) => {
+        console.log("insertData", { resp });
+      })
+      .catch((error) => console.log({ error }));
     createWindow();
   });
   // createWindow();

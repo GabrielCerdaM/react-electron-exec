@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { List } from "./List";
 import { useParams } from "react-router-dom";
 import useDocument from "../../Components/hooks/useDocument";
+import useElectronDialog from "../../Components/useElectronDialog";
+import useContract from "../../Components/hooks/useContract";
+
 export function Documents() {
+  const { confirmed, showDialog } = useElectronDialog();
+  // const { contracts, getContractById } = useContract()
   const { documents, getDocuments } = useDocument();
 
   const [docs, setDocs] = useState(null);
@@ -11,36 +16,69 @@ export function Documents() {
 
   useEffect(() => {
     getDocuments(contractId);
+    // getContractById(contractId);
   }, [contractId]);
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      if (docs && docs.length < 1) {
+        return;
+      }
 
-      const payload = docs.map((doc) => ({
-        path: doc.path,
-        name: doc.name,
-      }));
-
-      if (payload.length < 1) {
+      if (docs && docs.length < 1) {
         throw new Error("No se han seleccionado archivos");
       }
+      const respFile = await window.api.documentOperation({
+        action: 'copyFiles',
+        payload: docs,
+        id: contractId
+      });
+
+      console.log({ respFile });
 
       const resp = await window.api.documentOperation({
         action: "add",
-        payload,
+        payload: docs,
         id: contractId,
       });
 
-      console.log({ resp });
+      console.log('add', { resp });
     } catch (error) {
       console.log({ error });
     }
   };
 
   const handleChange = (e) => {
-    setDocs([...e.target.files]);
+    // setDocs([...e.target.files]);
   };
+
+  const handleSelectFiles = async (e) => {
+    try {
+      e.preventDefault()
+      const { dialogConfig: config } = require('../../utils/configs/dialogConfig');
+      const { files } = config
+      const { dialogType, dialogConfig } = files
+      const response = await showDialog({ dialogType, dialogConfig });
+      if (response.canceled) {
+        return;
+      }
+      if (response.filePaths) {
+        console.log('2', { response });
+        const { filePaths } = response;
+        const files = filePaths.map((file) => {
+          return {
+            name: file.replace(/^.*[\\/]/, ''),
+            path: file
+          }
+        })
+        setDocs(files)
+      }
+    } catch (error) {
+      console.log({ error });
+      alert(error)
+    }
+  }
 
   const handleDelete = (indexDeleted) => {
     const newArray = docs.filter((doc, index) => {
@@ -54,16 +92,19 @@ export function Documents() {
     <>
       <section className="p-4 flex flex-col items-center">
         <form
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={handleSubmit}
           className="flex flex-col items-center w-full"
         >
-          <input
+          {/* <input
             className="ml-auto p-5"
             type="file"
             name="documents"
             multiple
             onChange={handleChange}
-          />
+            /> */}
+          <button onClick={handleSelectFiles} className="bg-gray-200 p-5 border border-sky-500">
+            Seleccionar Archivos
+          </button>
           <div className="flex justify-around w-full gap-5">
             <div className="w-full">
               <h1 className="text-center">Documentos del contrato</h1>
@@ -74,7 +115,7 @@ export function Documents() {
               <List docs={docs} handleDelete={handleDelete} />
             </div>
           </div>
-          <button className="pt-5">Guardar</button>
+          <button type="submit" className="pt-5">Guardar</button>
         </form>
       </section>
     </>

@@ -1,5 +1,4 @@
 import { findByContractId } from "../../Modules/documents/utils/findByContractId";
-
 const { useEffect, useState } = require("react");
 
 const useDocument = (id) => {
@@ -16,6 +15,10 @@ const useDocument = (id) => {
       }).catch(error=>console.log({error}))
     }
   };
+
+  const copyFile = () => {
+    
+  }
 
   useEffect(() => {
     getDocuments(id);
