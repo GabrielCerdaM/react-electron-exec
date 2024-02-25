@@ -7,6 +7,7 @@ const fs = require("fs");
 const os = require("os");
 
 function ipcDocument() {
+
   const findFolder = async (contractId) => {
     try {
       let files = [];
@@ -53,8 +54,13 @@ function ipcDocument() {
       console.log({ folderDest });
 
       files = fs.readdirSync(`${folderDest}`);
-      console.log({ files });
-      return files;
+      if (files) {
+        const data = files.map(file => ({
+          name: file,
+          path: `${folderDest}\/${file}`
+        }))
+        return data
+      }
     } catch (error) {
       console.log({ error });
       return error;
@@ -109,6 +115,18 @@ function ipcDocument() {
     }
   };
 
+  const handleDeleteFile = async (path) => {
+    try {
+      console.log({ path });
+      const resp = fs.unlinkSync(path)
+      console.log({resp});
+      return null
+    } catch (error) {
+      console.log({ error });
+      return error;
+    }
+  }
+
   ipcMain.handle("document-operation", async (event, data) => {
     const { action, payload, id } = data;
     console.log({ action, payload, id });
@@ -122,6 +140,9 @@ function ipcDocument() {
         break;
       case "copyFiles":
         result = await handleCopyFile(id, payload);
+        break;
+      case "deleteFile":
+        result = await handleDeleteFile(payload);
         break;
       case "findByContractId":
         result = await handleFindByContractId(id);

@@ -1,5 +1,5 @@
 export function List({ docs, handleDelete }) {
-  console.log({docsList:docs});
+  console.log({ docsList: docs });
   return (
     <section className="bg-gray-300 border border-sky-500 p-3">
       <table className="w-full mx-auto">
@@ -13,10 +13,10 @@ export function List({ docs, handleDelete }) {
           {docs &&
             docs.map((doc, index) => {
               return (
-                <tr className="border" key={doc.name + "_" + index}>
+                <tr className="border" key={doc.id + "_" + index}>
                   <td className="pl-3">{doc.name}</td>
                   <td className="text-end pr-5">
-                    <button onClick={() => handleDelete(index)} type="submit">
+                    <button onClick={() => handleDelete({ index, path: doc.path })} type="submit">
                       Eliminar
                     </button>
                   </td>

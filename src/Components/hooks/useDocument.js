@@ -13,9 +13,8 @@ const useDocument = (id) => {
       });
 
       if (getFiles && getFiles.length > 0) {
-        const files = getFiles.map((file) => {
-          console.log({ file });
-          return { name: file, path: null };
+        const files = getFiles.map(({name,path}) => {
+          return { name, path };
         });
 
         console.log({ getFiles });
@@ -23,8 +22,6 @@ const useDocument = (id) => {
       }
     }
   };
-
-  const copyFile = () => {};
 
   useEffect(() => {
     getDocuments(id);

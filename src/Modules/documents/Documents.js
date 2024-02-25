@@ -80,41 +80,55 @@ export function Documents() {
     }
   }
 
-  const handleDelete = (indexDeleted) => {
-    const newArray = docs.filter((doc, index) => {
+  const handleDeleteLocal = ({ index, path }) => {
+    const newArray = docs.filter((doc, idx) => {
       console.log({ doc, index });
-      return index !== indexDeleted;
+      return idx !== index;
     });
     setDocs(newArray);
   };
 
+  const handleDeleteFile = async ({ index, path }) => {
+    try {
+      const respDeleteFile = await window.api.documentOperation({
+        action: 'deleteFile',
+        payload: path,
+        id: null
+      });
+      console.log({respDeleteFile});
+    } catch (error) {
+      console.log({ error });
+    }
+    getDocuments(contractId);
+  }
+
   return (
     <>
       <section className="p-4 flex flex-col items-center">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col items-center w-full"
-        >
-          {/* <input
+        {/* <input
             className="ml-auto p-5"
             type="file"
             name="documents"
             multiple
             onChange={handleChange}
             /> */}
-          <button onClick={handleSelectFiles} className="bg-gray-200 p-5 border border-sky-500">
-            Seleccionar Archivos
-          </button>
-          <div className="flex justify-around w-full gap-5">
-            <div className="w-full">
-              <h1 className="text-center">Documentos del contrato</h1>
-              <List docs={documents} />
-            </div>
-            <div className="w-full">
-              <h1 className="text-center">Seleccionados</h1>
-              <List docs={docs} handleDelete={handleDelete} />
-            </div>
+        <button onClick={handleSelectFiles} className="bg-gray-200 p-5 border border-sky-500">
+          Seleccionar Archivos
+        </button>
+        <div className="flex justify-around w-full gap-5">
+          <div className="w-full">
+            <h1 className="text-center">Documentos del contrato</h1>
+            <List docs={documents} handleDelete={handleDeleteFile} />
           </div>
+          <div className="w-full">
+            <h1 className="text-center">Seleccionados</h1>
+            <List docs={docs} handleDelete={handleDeleteLocal} />
+          </div>
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col items-center w-full"
+        >
           <button type="submit" className="pt-5">Guardar</button>
         </form>
       </section>
