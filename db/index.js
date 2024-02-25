@@ -79,20 +79,7 @@ async function insertData() {
       },
     ];
 
-    const documents = [
-      {
-        name: "document name",
-        path: "document path",
-        ext: "pdf",
-        ContractId: 1,
-      },
-      {
-        name: "document name",
-        path: "document path",
-        ext: "pdf",
-        ContractId: 1,
-      },
-    ];
+    const documents = [];
 
     contracts.forEach(async (element) => {
       try {

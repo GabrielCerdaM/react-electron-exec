@@ -1,24 +1,30 @@
-import { findByContractId } from "../../Modules/documents/utils/findByContractId";
+// import { findByContractId } from "../../Modules/documents/utils/findByContractId";
 const { useEffect, useState } = require("react");
 
 const useDocument = (id) => {
   const [documents, setDocuments] = useState(null);
 
-  const getDocuments = (id) => {
+  const getDocuments = async (id) => {
     if (id) {
-      findByContractId(id).then(resp => {
-        console.log('findByContractId', { resp });
-        if(resp){
-          const data = resp.map(doc => doc.dataValues)
-          setDocuments(data)
-        }
-      }).catch(error=>console.log({error}))
+      const getFiles = await window.api.documentOperation({
+        action: "getFiles",
+        payload: null,
+        id,
+      });
+
+      if (getFiles && getFiles.length > 0) {
+        const files = getFiles.map((file) => {
+          console.log({ file });
+          return { name: file, path: null };
+        });
+
+        console.log({ getFiles });
+        setDocuments(files);
+      }
     }
   };
 
-  const copyFile = () => {
-    
-  }
+  const copyFile = () => {};
 
   useEffect(() => {
     getDocuments(id);
