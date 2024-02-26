@@ -86,6 +86,7 @@ export default function Item({ contract }) {
         <div className="flex justify-center items-center gap-5 pt-5">
           <Link to={`/contract/${dataValues.id}`}>Ver Detalle</Link>
           <Link to={`/document/${dataValues.id}`}>Ver Documentos</Link>
+          <Link to={`/payment/${dataValues.id}`}>Ver Pagos</Link>
           <form onSubmit={(event) => handleSubmit(event, dataValues.id)}>
             <button type="submit">Eliminar</button>
           </form>

@@ -1,7 +1,30 @@
 const PaymentRepository = require("../Repository/PaymentRepository");
 
 class PaymentService {
-    getAll() {
-        return PaymentRepository.getAll()
+    async getAll() {
+        try {
+            const resp = await PaymentRepository.getAll()
+            let payments = [];
+            if (resp && resp.length > 0) {
+                payments = resp.map(p => {
+                    const { dataValues } = p
+                    return dataValues
+                })
+                return payments;
+            }
+        } catch (error) {
+            console.log({ error });
+            return error;
+        }
+    }
+
+    async delete(id) {
+        try {
+            return await PaymentRepository.delete(id);
+        } catch (error) {
+            console.log({ error });
+        }
     }
 }
+
+module.exports = new PaymentService();

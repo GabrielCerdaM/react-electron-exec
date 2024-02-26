@@ -3,7 +3,6 @@ import { List } from "./List";
 import { useParams } from "react-router-dom";
 import useDocument from "../../Components/hooks/useDocument";
 import useElectronDialog from "../../Components/useElectronDialog";
-import useContract from "../../Components/hooks/useContract";
 
 export function Documents() {
   const { confirmed, showDialog } = useElectronDialog();

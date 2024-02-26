@@ -79,6 +79,28 @@ async function insertData() {
       },
     ];
 
+    const payments = [
+      {
+        "type": "Debito",
+        amount: 10000,
+        ContractId: 1
+      },
+      {
+        "type": "Credito",
+        amount: 10000,
+        ContractId: 1
+      },
+      {
+        "type": "Efectivo",
+        amount: 10000,
+        ContractId: 1
+      },
+      {
+        "type": "Transferencia",
+        amount: 10000,
+        ContractId: 1
+      }
+    ]
     const documents = [];
 
     contracts.forEach(async (element) => {
@@ -98,6 +120,14 @@ async function insertData() {
         console.log({ error });
       }
     });
+
+    payments.forEach(async (payment, index) => {
+      try {
+        await Payment.create(payment, { include: Contract });
+      } catch (error) {
+        console.log({ error });
+      }
+    })
 
     console.log({ newUser });
     console.log("insertData");

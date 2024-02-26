@@ -4,6 +4,7 @@ import List from "../Modules/contracts/List";
 import CreateContract from "../Modules/contracts/CreateContract";
 import ContractEdit from "../Modules/contracts/ContractEdit";
 import { Documents } from "../Modules/documents/Documents";
+import Payment from "../Modules/payment/Payment";
 
 export const routes = createHashRouter([
   {
@@ -25,6 +26,10 @@ export const routes = createHashRouter([
       {
         path: "/document/:contractId",
         element: <Documents />,
+      },
+      {
+        path: "/payment/:contractId",
+        element: <Payment />,
       },
     ],
   },
