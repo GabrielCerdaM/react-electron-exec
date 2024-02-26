@@ -1,10 +1,6 @@
 export default function Item({ payload, handleDelete }) {
     const { id, type, amount, ContractId } = payload;
     const handleEdit = () => { }
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('handleSubmit');
-    }
 
     return (<>
         <div className="flex justify-between">

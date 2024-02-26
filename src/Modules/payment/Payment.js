@@ -2,16 +2,31 @@ import { Link, useParams } from "react-router-dom";
 import usePayment from "../../Components/hooks/usePayment";
 import { useEffect } from "react";
 import Item from "./Item";
+import useElectronDialog from "../../Components/hooks/useElectronDialog";
 
 export default function Payment() {
     const { contractId } = useParams();
+    const { confirmed, showDialog } = useElectronDialog()
     // const contractId = 1;
     const { payments, getPaymentsByContractId, removeById } = usePayment();
     // let payments = [];
 
     const handleDelete = async (id) => {
-        console.log('handleDelete',id);
-        removeById(id)
+        const response = await showDialog({
+            dialogType: 'showMessageBoxSync', dialogConfig: {
+                message: "Estas seguro que deseas eliminar este pago?",
+                type: 'question',
+                tile: 'Eliminando pago',
+                buttons:["Cancelar","Eliminar"],
+                defaultId: 0,
+
+            }
+        });
+        console.log({ response });
+        if (response) {
+            console.log('handleDelete', id);
+            removeById(id)
+        }
     }
 
     useEffect(() => {

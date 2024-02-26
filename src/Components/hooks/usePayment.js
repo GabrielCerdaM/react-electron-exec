@@ -1,8 +1,10 @@
 // import { findByContractId } from "../../Modules/documents/utils/findByContractId";
 const { useState } = require("react");
+// const useElectronDialog = require("./useElectronDialog");
 
 const usePayment = () => {
     const [payments, setPayments] = useState(null);
+    // const { confirm, showDialog } = useElectronDialog();
 
     const removeById = async (paymentId) => {
         try {
@@ -16,16 +18,6 @@ const usePayment = () => {
             setPayments((data) => {
                 return data.filter(p => p.id !== response)
             })
-            // if(response == 0){
-            //     throw new Error('Error al eliminar')
-            // }
-            // console.log({ response });
-            // let newArray = [...payments];
-            // newArray.filter(p =>
-            //     p.id !== response
-            // )
-            // console.log({ newArray });
-            // setPayments(newArray)
         } catch (error) {
             console.log({ error });
         }

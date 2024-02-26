@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { List } from "./List";
 import { useParams } from "react-router-dom";
 import useDocument from "../../Components/hooks/useDocument";
-import useElectronDialog from "../../Components/useElectronDialog";
+import useElectronDialog from "../../Components/hooks/useElectronDialog";
+
 
 export function Documents() {
   const { confirmed, showDialog } = useElectronDialog();
@@ -94,7 +95,7 @@ export function Documents() {
         payload: path,
         id: null
       });
-      console.log({respDeleteFile});
+      console.log({ respDeleteFile });
     } catch (error) {
       console.log({ error });
     }

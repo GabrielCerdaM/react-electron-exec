@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useElectronDialog from "../../Components/useElectronDialog";
+import useElectronDialog from "../../Components/hooks/useElectronDialog";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateContract() {
