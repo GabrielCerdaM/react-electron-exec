@@ -31,7 +31,7 @@ function ipcContract() {
 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // In the main process
-  ipcMain.handle("contract-operation", (event, data) => {
+  ipcMain.handle("contract-operation", async (event, data) => {
     const { action, payload, id } = data;
     let result;
     switch (action) {
@@ -45,7 +45,7 @@ function ipcContract() {
         result = handleFind(payload);
         break;
       case "findById":
-        result = handleFindById(id);
+        result = await handleFindById(id);
         break;
       case "create":
         result = handleCreate({ payload });
@@ -58,10 +58,11 @@ function ipcContract() {
         break;
       default:
         console.error("Invalid action:", action);
-        return event.reply("crud-operation-reply", {
+        result = event.reply("crud-operation-reply", {
           success: false,
           error: "Invalid action",
         });
+        break;
     }
     return result;
   });

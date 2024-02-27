@@ -1,16 +1,31 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { findById } from "./utils/findById";
-import useElectronDialog from "../../Components/hooks/useElectronDialog";
-import useContract from "../../Components/hooks/useContract";
 
 export default function ContractEdit() {
   const navigate = useNavigate();
 
   const { contractId } = useParams();
 
-  const { contract, contracts, getContractById } = useContract();
-  const { showDialog } = useElectronDialog();
+  // const [contracts, setContracts] = useState(null);
+
+  const fetchContract = async () => {
+    const resp = await findById(contractId);
+    if (resp) {
+      const { dataValues } = resp;
+      const dateObj = new Date(dataValues.dateDeceased);
+      const formattedDate = dateObj.toISOString().slice(0, 10);
+      setInputs((values) => ({
+        ...values,
+        ...dataValues,
+        dateDeceased: formattedDate,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    fetchContract();
+  }, [contractId])
 
   const [inputs, setInputs] = useState({
     id: "",
@@ -32,44 +47,25 @@ export default function ContractEdit() {
     price: "",
   });
 
-  useEffect(() => {
-    console.log({ contractId });
-    getContractById(contractId).then(() => {
-      console.log({ contract });
-      if (contract) {
-        const dateObj = new Date(contract.dateDeceased);
-        const formattedDate = dateObj.toISOString().slice(0, 10);
-        setInputs((values) => ({
-          ...values,
-          ...contract,
-          dateDeceased: formattedDate,
-        }));
-      }
-    })
-    // const fetchContract = () => {
-    //   getContractById(contractId).then(() => {
-    //     // Adaptar el formato de la fecha si existe
-    //     // Convertir la fecha a un objeto Date
-    //     console.log({contract});
-    //     if (contract) {
-    //       console.log('contract true');
-    //       const dateObj = new Date(contract.dateDeceased);
-    //       // Obtener el formato YYYY-MM-DD
-    //       const formattedDate = dateObj.toISOString().slice(0, 10);
-    //       setInputs((values) => ({
-    //         ...values,
-    //         ...contract,
-    //         dateDeceased: formattedDate,
-    //       }));
-    //     }
-    //   })
-
-    // };
-
-    // fetchContract()
-
-    return () => { };
-  }, [contractId]);
+  const [errors, setErrors] = useState({
+    id: "",
+    bill: "",
+    rut: "",
+    name: "",
+    phone: "",
+    address: "",
+    email: "",
+    kindship: "",
+    rutDeceased: "",
+    nameDeceased: "",
+    dateDeceased: "",
+    typeBenefit: "",
+    amountBenefit: "",
+    benefitRequest: false,
+    wakeAddress: "",
+    cementery: "",
+    price: "",
+  });
 
   const validationRules = {
     id: {
@@ -135,36 +131,36 @@ export default function ContractEdit() {
     },
   };
 
-  const [errors, setErrors] = useState({
-    id: "",
-    bill: "",
-    rut: "",
-    name: "",
-    phone: "",
-    address: "",
-    email: "",
-    kindship: "",
-    rutDeceased: "",
-    nameDeceased: "",
-    dateDeceased: "",
-    typeBenefit: "",
-    amountBenefit: "",
-    benefitRequest: false,
-    wakeAddress: "",
-    cementery: "",
-    price: "",
-  });
+  // Validation function
+  const validateForm = (formData) => {
+    const errors = {};
+    // Iterate over each input field in formData
+    for (const fieldName in formData) {
+      if (formData.hasOwnProperty(fieldName)) {
+        const value = formData[fieldName];
+        const rules = validationRules[fieldName];
+
+        // Check each validation rule for the current field
+        if (rules) {
+          if (rules.minLength && value.trim().length < rules.minLength) {
+            errors[
+              fieldName
+            ] = `Debe ingresar al menos ${rules.minLength} caracteres`;
+          }
+
+          if (rules.regex && !rules.regex.test(value)) {
+            errors[fieldName] = "Formato no válido";
+          }
+        }
+      }
+    }
+    return errors;
+  };
 
   const formatRut = (rut) => {
     // Eliminar todos los caracteres que no sean números o "K" o "k"
     rut = rut.replace(/[^\dKk]/g, "");
 
-    // Si el RUT es "K" o "k", lo devolvemos directamente
-    // if (rut.toUpperCase() === "K") {
-    //   return "K";
-    // }
-
-    // Formatear el RUT
     let rutFormateado = rut.replace(
       /^(\d{1,2})(\d{3})(\d{3})([\dKk])$/,
       "$1.$2.$3-$4"
@@ -198,36 +194,11 @@ export default function ContractEdit() {
         payload: inputs,
         id: inputs.id,
       });
+      console.log({ resp });
       navigate("/");
     } catch (error) {
       console.log({ error });
     }
-  };
-
-  // Validation function
-  const validateForm = (formData) => {
-    const errors = {};
-    // Iterate over each input field in formData
-    for (const fieldName in formData) {
-      if (formData.hasOwnProperty(fieldName)) {
-        const value = formData[fieldName];
-        const rules = validationRules[fieldName];
-
-        // Check each validation rule for the current field
-        if (rules) {
-          if (rules.minLength && value.trim().length < rules.minLength) {
-            errors[
-              fieldName
-            ] = `Debe ingresar al menos ${rules.minLength} caracteres`;
-          }
-
-          if (rules.regex && !rules.regex.test(value)) {
-            errors[fieldName] = "Formato no válido";
-          }
-        }
-      }
-    }
-    return errors;
   };
 
   return (

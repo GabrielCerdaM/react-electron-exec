@@ -2,20 +2,18 @@ import { findById } from "../../Modules/contracts/utils/findById";
 
 const { useEffect, useState } = require("react");
 const { getContracts } = require("../../Modules/contracts/utils/getContracts");
-const {
-  getAllFiltered: getAllF,
-} = require("../../Modules/contracts/utils/getAllFiltered");
 
-const useContract = () => {
+const useContract = (temp) => {
   const [contracts, setContracts] = useState(null);
-  const [contract, setContract] = useState(null);
 
   const getContractById = async (id) => {
     try {
       const resp = await findById(id);
+      console.log({resp});
       if (resp) {
         const { dataValues } = resp;
-        setContract(dataValues);
+        console.log('dataValues',dataValues);
+        setContracts([dataValues]);
       }
     } catch (error) {
       console.log({ error });
@@ -43,13 +41,13 @@ const useContract = () => {
   };
 
   useEffect(() => {
-    // getAll();
+    console.log("useEffect useContract");
     return () => {
       console.log("return useContract");
     };
-  }, []);
+  }, [temp]);
 
-  return { contract, contracts, getContractById, getAll, getAllFiltered };
+  return { contracts, getContractById, getAll, getAllFiltered };
 };
 
 export default useContract;

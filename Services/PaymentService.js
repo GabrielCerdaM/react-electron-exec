@@ -18,6 +18,10 @@ class PaymentService {
         }
     }
 
+    async getByContractId(contractId) {
+        return await PaymentRepository.getByContractId(contractId)
+    }
+
     async create(id, payload) {
         try {
             return await PaymentRepository.create({ ...payload, ContractId: id });

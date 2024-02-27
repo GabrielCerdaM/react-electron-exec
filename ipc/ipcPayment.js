@@ -21,11 +21,14 @@ function ipcPayment() {
 
   const handleFindByContractId = async (contractId) => {
     try {
-      const resp = await PaymentService.getAll();
+      const resp = await PaymentService.getByContractId(contractId);
+      console.log({ resp });
       if (!resp) {
         throw new Error('Error al obtener pagos');
       }
-      return resp;
+      const payments = resp.map(payment => payment.dataValues)
+      console.log({payments});
+      return payments;
     } catch (error) {
       console.log({ error });
     }
@@ -55,7 +58,7 @@ function ipcPayment() {
         result = handleCreate(id, payload)
         break;
       case "findByContractId":
-        result = handleFindByContractId(id);
+        result = await handleFindByContractId(id);
         break;
       case "delete":
         result = handleDelete(id);

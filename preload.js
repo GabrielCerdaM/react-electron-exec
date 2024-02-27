@@ -44,6 +44,7 @@ contextBridge.exposeInMainWorld("api", {
       console.log("ipcRenderer invoke contract-operation", { result });
       return result;
     } catch (error) {
+      console.log({error});
       return error;
     }
   },

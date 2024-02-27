@@ -4,14 +4,20 @@ import useContract from "../../Components/hooks/useContract";
 import { useEffect, useState } from "react";
 import Item from "./Item";
 import useElectronDialog from "../../Components/hooks/useElectronDialog";
+import { findById } from "./../contracts/utils/findById";
+import { getPaymentByContractId } from "./utils/getPaymentByContractId";
 
 export default function Payment() {
     const { contractId } = useParams();
     const { showDialog } = useElectronDialog()
-    const { payments, create, getPaymentsByContractId, removeById } = usePayment();
-    const { contracts, getContractById } = useContract()
+
+    // const { payments, create, getPaymentsByContractId, removeById } = usePayment();
+    // const { contract, getContractById } = useContract()
 
     const [inputs, setInputs] = useState(null)
+
+    const [contract, setContract] = useState(null);
+    const [payments, setPayments] = useState(null);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -34,18 +40,33 @@ export default function Payment() {
         console.log({ response });
         if (response) {
             console.log('handleDelete', id);
-            removeById(id)
+            // removeById(id)
         }
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        create(inputs, contractId);
+        // create(inputs, contractId);
     }
 
     useEffect(() => {
-        getPaymentsByContractId(contractId)
-        getContractById(contractId);
+        const getContracts = async (contractId) => {
+            const resp = await findById(contractId);
+            if (resp) {
+                const { dataValues } = resp;
+                setContract(dataValues)
+            }
+        }
+
+        const getPayment = async (contractId) => {
+            const getPayments = await getPaymentByContractId(contractId);
+            console.log({ getPayments });
+            setPayments(getPayments)
+        };
+        getContracts(contractId);
+        getPayment(contractId);
+        // getPaymentsByContractId(contractId)
+        // getContractById(contractId);
     }, [contractId])
     return (
         <>
@@ -97,8 +118,8 @@ export default function Payment() {
                             <Item key={payment.id} payload={payment} handleDelete={() => handleDelete(payment.id)} />
                         ))}
                         <div className="flex m-auto gap-12 p-6 my-5 shadow-xl border-black border-solid border rounded-xl">
-                            <p>Cuota mortuoria: {contracts.typeBenefit}</p>
-                            <p>{new Intl.NumberFormat('es-es').format(contracts.amountBenefit)}</p>
+                            <p>Cuota mortuoria: {contract.typeBenefit}</p>
+                            <p>{new Intl.NumberFormat('es-es').format(contract.amountBenefit)}</p>
                         </div>
                     </>
                 ) : (

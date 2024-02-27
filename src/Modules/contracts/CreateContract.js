@@ -160,8 +160,6 @@ export default function CreateContract() {
       payload: inputs,
     });
 
-    console.log({ resp });
-    showDialog({ message: "Creado correctamente", title: "Contrato creado" });
     navigate("/");
   };
 

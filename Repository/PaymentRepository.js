@@ -4,6 +4,10 @@ class PaymentRepository {
     return await Payment.findAll();
   }
 
+  async getByContractId(contractId) {
+    return await Payment.findAll({where:{ContractId: contractId}});
+  }  
+
   async create(payload) {
     return await Payment.create(payload)
   }
