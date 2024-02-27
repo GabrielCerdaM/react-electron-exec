@@ -18,6 +18,14 @@ class PaymentService {
         }
     }
 
+    async create(id, payload) {
+        try {
+            return await PaymentRepository.create({ ...payload, ContractId: id });
+        } catch (error) {
+            console.log({ error });
+        }
+    }
+
     async delete(id) {
         try {
             return await PaymentRepository.delete(id);

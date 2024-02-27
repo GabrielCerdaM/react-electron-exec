@@ -1,11 +1,11 @@
 import { Link, useLoaderData } from "react-router-dom";
 import Item from "./Item";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { find } from "./utils/find";
 import useContract from "../../Components/hooks/useContract";
 
 export default function List() {
-  const { contracts, getAllFiltered } = useContract();
+  const { contracts, getAllFiltered, getAll } = useContract();
   const [search, setSearch] = useState("");
 
   const handleSubmit = (e) => {
@@ -25,6 +25,9 @@ export default function List() {
   //   e.preventDefault()
   // }
 
+  useEffect(() => {
+    getAll();
+  }, [])
   return (
     <>
       <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border px-6">
@@ -71,7 +74,7 @@ export default function List() {
       <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border p-6 mt-3">
         {contracts !== null && contracts.length > 0 ? (
           contracts.map((contract) => (
-            <Item key={contract.dataValues.id} contract={contract} />
+            <Item key={contract.id} contract={contract} />
           ))
         ) : (
           <>

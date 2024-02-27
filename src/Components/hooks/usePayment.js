@@ -6,6 +6,20 @@ const usePayment = () => {
     const [payments, setPayments] = useState(null);
     // const { confirm, showDialog } = useElectronDialog();
 
+    const create = async (payment, contractId) => {
+        try {
+            const resp = await window.api.paymentOperation({
+                action: 'add',
+                payload: payment,
+                id: contractId
+            })
+            console.log({ resp });
+            return resp;
+        } catch (error) {
+            console.log({ error });
+        }
+    }
+
     const removeById = async (paymentId) => {
         try {
             const response = await window.api.paymentOperation(
@@ -36,7 +50,7 @@ const usePayment = () => {
         }
     };
 
-    return { payments, removeById, getPaymentsByContractId };
+    return { payments, create, removeById, getPaymentsByContractId };
 };
 
 export default usePayment;

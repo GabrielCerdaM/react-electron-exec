@@ -17,6 +17,7 @@ Contract.init(
     rutDeceased: DataTypes.STRING,
     nameDeceased: DataTypes.STRING,
     dateDeceased: DataTypes.DATE,
+    benefitRequest: DataTypes.BOOLEAN,
     typeBenefit: DataTypes.STRING,
     amountBenefit: DataTypes.FLOAT,
     wakeAddress: DataTypes.STRING,

@@ -3,8 +3,6 @@ import { deleteById } from "./utils/deleteById";
 export default function Item({ contract }) {
   const navigate = useNavigate();
 
-  const { dataValues } = contract;
-
   const deleteItem = async (id) => {
     const resp = await deleteById(id);
     console.log({ resp });
@@ -40,34 +38,34 @@ export default function Item({ contract }) {
         <div className="text-center">
           <p>
             N Factura:
-            <strong> {dataValues.bill}</strong>
+            <strong> {contract.bill}</strong>
           </p>
         </div>
         <div className="flex pt-5 justify-around gap-5">
           <div className="">
             <p>
               Nombre cliente:
-              <strong> {dataValues.name}</strong>
+              <strong> {contract.name}</strong>
             </p>
             <p>
               Telefono:
-              <strong> {dataValues.phone}</strong>
+              <strong> {contract.phone}</strong>
             </p>
             <p>
               Direccion:
-              <strong> {dataValues.address}</strong>
+              <strong> {contract.address}</strong>
             </p>
             <p>
               parentezco:
-              <strong> {dataValues.kindship}</strong>
+              <strong> {contract.kindship}</strong>
             </p>
           </div>
           <div>
             <p>
-              Nombre fallecido: <strong>{dataValues.nameDeceased}</strong>
+              Nombre fallecido: <strong>{contract.nameDeceased}</strong>
             </p>
             <p>
-              Rut fallecido: <strong>{dataValues.rutDeceased}</strong>
+              Rut fallecido: <strong>{contract.rutDeceased}</strong>
             </p>
           </div>
         </div>
@@ -75,19 +73,19 @@ export default function Item({ contract }) {
           <div>
             <p>
               Velatorio:
-              <strong> {dataValues.wakeAddress}</strong>
+              <strong> {contract.wakeAddress}</strong>
             </p>
             <p>
               Cementerio:
-              <strong> {dataValues.cementery}</strong>
+              <strong> {contract.cementery}</strong>
             </p>
           </div>
         </div>
         <div className="flex justify-center items-center gap-5 pt-5">
-          <Link to={`/contract/${dataValues.id}`}>Ver Detalle</Link>
-          <Link to={`/document/${dataValues.id}`}>Ver Documentos</Link>
-          <Link to={`/payment/${dataValues.id}`}>Ver Pagos</Link>
-          <form onSubmit={(event) => handleSubmit(event, dataValues.id)}>
+          <Link to={`/contract/${contract.id}`}>Ver Detalle</Link>
+          <Link to={`/document/${contract.id}`}>Ver Documentos</Link>
+          <Link to={`/payment/${contract.id}`}>Ver Pagos</Link>
+          <form onSubmit={(event) => handleSubmit(event, contract.id)}>
             <button type="submit">Eliminar</button>
           </form>
         </div>

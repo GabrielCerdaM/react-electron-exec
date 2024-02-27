@@ -2,18 +2,15 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { findById } from "./utils/findById";
 import useElectronDialog from "../../Components/hooks/useElectronDialog";
+import useContract from "../../Components/hooks/useContract";
 
 export default function ContractEdit() {
   const navigate = useNavigate();
 
   const { contractId } = useParams();
 
+  const { contract, contracts, getContractById } = useContract();
   const { showDialog } = useElectronDialog();
-  const id = parseInt(contractId);
-
-  const getContract = async (id) => {
-    return await findById(id);
-  };
 
   const [inputs, setInputs] = useState({
     id: "",
@@ -29,34 +26,50 @@ export default function ContractEdit() {
     dateDeceased: "",
     typeBenefit: "",
     amountBenefit: "",
+    benefitRequest: false,
     wakeAddress: "",
     cementery: "",
     price: "",
   });
 
   useEffect(() => {
-    const fetchContract = async () => {
-      const contract = await getContract(id);
-      const { dataValues } = contract;
-      console.log({ dataValues });
-      // Adaptar el formato de la fecha si existe
-      // Convertir la fecha a un objeto Date
-      const dateObj = new Date(dataValues.dateDeceased);
+    console.log({ contractId });
+    getContractById(contractId).then(() => {
+      console.log({ contract });
+      if (contract) {
+        const dateObj = new Date(contract.dateDeceased);
+        const formattedDate = dateObj.toISOString().slice(0, 10);
+        setInputs((values) => ({
+          ...values,
+          ...contract,
+          dateDeceased: formattedDate,
+        }));
+      }
+    })
+    // const fetchContract = () => {
+    //   getContractById(contractId).then(() => {
+    //     // Adaptar el formato de la fecha si existe
+    //     // Convertir la fecha a un objeto Date
+    //     console.log({contract});
+    //     if (contract) {
+    //       console.log('contract true');
+    //       const dateObj = new Date(contract.dateDeceased);
+    //       // Obtener el formato YYYY-MM-DD
+    //       const formattedDate = dateObj.toISOString().slice(0, 10);
+    //       setInputs((values) => ({
+    //         ...values,
+    //         ...contract,
+    //         dateDeceased: formattedDate,
+    //       }));
+    //     }
+    //   })
 
-      // Obtener el formato YYYY-MM-DD
-      const formattedDate = dateObj.toISOString().slice(0, 10);
-      console.log({ formattedDate });
-      // Actualizar los valores del estado, incluyendo la fecha adaptada
-      setInputs((values) => ({
-        ...values,
-        ...dataValues,
-        dateDeceased: formattedDate,
-      }));
-    };
+    // };
 
-    fetchContract();
+    // fetchContract()
+
     return () => { };
-  }, [id]);
+  }, [contractId]);
 
   const validationRules = {
     id: {
@@ -108,6 +121,9 @@ export default function ContractEdit() {
       required: false,
       numeric: true, // You can implement numeric validation logic here
     },
+    benefitRequest: {
+      require: false,
+    },
     wakeAddress: {
       required: false,
     },
@@ -133,6 +149,7 @@ export default function ContractEdit() {
     dateDeceased: "",
     typeBenefit: "",
     amountBenefit: "",
+    benefitRequest: false,
     wakeAddress: "",
     cementery: "",
     price: "",
@@ -158,29 +175,33 @@ export default function ContractEdit() {
   const handleChange = (event) => {
     const name = event.target.name;
     let value = event.target.value;
-
     if (name === "rut" || name === "rutDeceased") {
       value = formatRut(event.target.value);
+    }
+
+    if (name === "benefitRequest") {
+      value = event.target.checked
     }
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const errors = validateForm(inputs);
-    if (Object.getOwnPropertyNames(errors).length > 0) {
-      setErrors(errors);
-      console.log({ errors });
-      return;
+    try {
+      e.preventDefault();
+      const errors = validateForm(inputs);
+      if (Object.getOwnPropertyNames(errors).length > 0) {
+        setErrors(errors);
+        return;
+      }
+      const resp = await window.api.contractOperation({
+        action: "update",
+        payload: inputs,
+        id: inputs.id,
+      });
+      navigate("/");
+    } catch (error) {
+      console.log({ error });
     }
-    const resp = await window.api.contractOperation({
-      action: "update",
-      payload: inputs,
-      id: inputs.id,
-    });
-    console.log({ resp });
-    showDialog({ message: "Editado correctamente", title: "Contrato editado" });
-    navigate("/");
   };
 
   // Validation function
@@ -201,7 +222,7 @@ export default function ContractEdit() {
           }
 
           if (rules.regex && !rules.regex.test(value)) {
-            errors[fieldName] = "Formano no válido";
+            errors[fieldName] = "Formato no válido";
           }
         }
       }
@@ -232,12 +253,33 @@ export default function ContractEdit() {
                 name="bill"
                 type="text"
                 value={inputs.bill}
-                placeholder="bill"
+                placeholder="Numero Factura"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.bill ? errors.bill : ""}
               </p>
             </div>
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0 flex flex-col justify-evenly">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="benefitRequest"
+              >
+                La colilla fue cobrada?
+              </label>
+              <input
+                onChange={handleChange}
+                className="w-full"
+                name="benefitRequest"
+                value="benefitRequest"
+                type="checkbox"
+                // defaultChecked={inputs.benefitRequest}
+                checked={inputs.benefitRequest}
+              />
+              <p className="text-red-500 text-xs italic">
+                {errors.benefitRequest ? errors.benefitRequest : ""}
+              </p>
+            </div>
+
           </div>
         </div>
         <div className="p-3 m-3">
@@ -302,7 +344,7 @@ export default function ContractEdit() {
                 name="phone"
                 type="text"
                 value={inputs.phone}
-                placeholder="Jane"
+                placeholder="+569"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.phone ? errors.phone : ""}
@@ -455,6 +497,7 @@ export default function ContractEdit() {
                 name="typeBenefit"
                 value={inputs.typeBenefit}
                 type="text"
+                placeholder="Tipo"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.typeBenefit ? errors.typeBenefit : ""}
@@ -476,6 +519,7 @@ export default function ContractEdit() {
                 name="amountBenefit"
                 value={inputs.amountBenefit}
                 type="number"
+                placeholder="0"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.amountBenefit ? errors.amountBenefit : ""}
@@ -503,6 +547,7 @@ export default function ContractEdit() {
                 name="wakeAddress"
                 value={inputs.wakeAddress}
                 type="type"
+                placeholder="Direccion"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.wakeAddress ? errors.wakeAddress : ""}
@@ -524,6 +569,7 @@ export default function ContractEdit() {
                 name="cementery"
                 value={inputs.cementery}
                 type="type"
+                placeholder="Direccion"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.cementery ? errors.cementery : ""}

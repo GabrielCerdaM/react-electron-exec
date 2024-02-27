@@ -4,6 +4,10 @@ class PaymentRepository {
     return await Payment.findAll();
   }
 
+  async create(payload) {
+    return await Payment.create(payload)
+  }
+
   async delete(id) {
     return await Payment.destroy({
       where: {

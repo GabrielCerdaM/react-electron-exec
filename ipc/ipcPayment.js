@@ -31,15 +31,16 @@ function ipcPayment() {
     }
   }
 
-  const handleCreate = async ({ payload }) => {
-    return await ContractService.create(payload);
+  const handleCreate = async (contractId, payload) => {
+    // return await ContractService.create(payload);
+    return await PaymentService.create(contractId, payload)
   };
   const handleUpdate = async ({ id, payload }) => {
     return await ContractService.update(id, payload);
   };
   const handleDelete = async (id) => {
     const response = await PaymentService.delete(id);
-    console.log({response});
+    console.log({ response });
     return id;
     // return await ContractService.delete(id);
   };
@@ -50,6 +51,9 @@ function ipcPayment() {
     const { action, payload, id } = data;
     let result;
     switch (action) {
+      case "add":
+        result = handleCreate(id, payload)
+        break;
       case "findByContractId":
         result = handleFindByContractId(id);
         break;
