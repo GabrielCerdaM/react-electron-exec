@@ -2,17 +2,22 @@ import { Link, useLoaderData } from "react-router-dom";
 import Item from "./Item";
 import { useEffect, useState } from "react";
 import { find } from "./utils/find";
-import useContract from "../../Components/hooks/useContract";
+import { getAll } from "./utils/getAll";
+import { getAllFiltered } from "./utils/getAllFiltered";
 
 export default function List() {
-  const { contracts, getAllFiltered, getAll } = useContract();
+  const [contracts, setContracts] = useState(null);
   const [search, setSearch] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log({ e });
     console.log({ search });
-    getAllFiltered(search);
+    // getAllFiltered(search);
+    getAllFiltered(search).then(resp => {
+      console.log({ resp });
+      setContracts(resp)
+    });
   };
 
   const handleChange = (event) => {
@@ -26,7 +31,12 @@ export default function List() {
   // }
 
   useEffect(() => {
-    getAll();
+    getAll().then(resp => {
+      console.log({resp});
+      // const data = resp.map((c => c.dataValues));
+      // console.log({data });
+      setContracts(resp)
+    });
   }, [])
   return (
     <>
@@ -72,7 +82,7 @@ export default function List() {
         </div>
       </div>
       <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-xl bg-clip-border p-6 mt-3">
-        {contracts !== null && contracts.length > 0 ? (
+        {contracts && contracts.length > 0 ? (
           contracts.map((contract) => (
             <Item key={contract.id} contract={contract} />
           ))

@@ -3,11 +3,24 @@ const ContractService = require("../Services/ContractService");
 
 function ipcContract() {
   const handleGetAll = async () => {
-    return await ContractService.getAll();
+    try {
+      const resp = await ContractService.getAll();
+      if (resp) {
+        return resp.map(c => c.dataValues)
+      }
+    } catch (error) {
+      console.log({ error });
+      return null
+    }
+
   };
 
   const handleGetAllFiltered = async (payload) => {
-    return await ContractService.getAllFiltered(payload);
+    const resp = await ContractService.getAllFiltered(payload);
+    if (resp) {
+      return resp.map(c => c.dataValues)
+    }
+    return null
   };
 
   const handleFind = async (payload) => {

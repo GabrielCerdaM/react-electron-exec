@@ -1,4 +1,4 @@
-export async function getContracts() {
+export async function getAll() {
   try {
     return await window.api.contractOperation({
       action: "getAll",

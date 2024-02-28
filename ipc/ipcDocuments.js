@@ -82,8 +82,10 @@ function ipcDocument() {
         doc.ContractId = id;
         await DocumentService.create(doc);
       });
+      return null;
     } catch (error) {
       console.log({ error });
+      return error;
     }
   };
 

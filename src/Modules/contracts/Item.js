@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { deleteById } from "./utils/deleteById";
+
 export default function Item({ contract }) {
   const navigate = useNavigate();
 

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { List } from "./List";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useDocument from "../../Components/hooks/useDocument";
 import useElectronDialog from "../../Components/hooks/useElectronDialog";
 
 
 export function Documents() {
+  const navigate = useNavigate();
+
   const { confirmed, showDialog } = useElectronDialog();
-  // const { contracts, getContractById } = useContract()
   const { documents, getDocuments } = useDocument();
 
   const [docs, setDocs] = useState(null);
@@ -44,6 +45,7 @@ export function Documents() {
       });
 
       console.log('add', { resp });
+      navigate('/')
     } catch (error) {
       console.log({ error });
     }

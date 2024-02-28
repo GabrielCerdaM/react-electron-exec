@@ -37,11 +37,11 @@ async function insertData() {
         nameDeceased: "nombre",
         dateDeceased: "1990-12-12",
         typeBenefit: "AFP",
-        amountBenefit: 999999,
+        amountBenefit: 550000,
         benefitRequest: true,
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
-        price: 1000,
+        price: 950000,
         bill: 100,
       },
       {
@@ -55,11 +55,11 @@ async function insertData() {
         nameDeceased: "nombre",
         dateDeceased: "1990-12-12",
         typeBenefit: "AFP",
-        amountBenefit: 999999,
+        amountBenefit: 550000,
         benefitRequest: false,
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
-        price: 1000,
+        price: 1600000,
         bill: 100,
       },
       {
@@ -73,11 +73,11 @@ async function insertData() {
         nameDeceased: "nombre",
         dateDeceased: "1990-12-12",
         typeBenefit: "AFP",
-        amountBenefit: 999999,
+        amountBenefit: 550000,
         benefitRequest: false,
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
-        price: 1000,
+        price: 2000000,
         bill: 100,
       },
     ];
@@ -102,6 +102,26 @@ async function insertData() {
         "type": "Transferencia",
         amount: 10000,
         ContractId: 1
+      },
+      {
+        "type": "Debito",
+        amount: 10000,
+        ContractId: 1
+      },
+      {
+        "type": "Credito",
+        amount: 10000,
+        ContractId: 2
+      },
+      {
+        "type": "Efectivo",
+        amount: 10000,
+        ContractId: 2
+      },
+      {
+        "type": "Transferencia",
+        amount: 10000,
+        ContractId: 3
       }
     ]
     const documents = [];

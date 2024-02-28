@@ -84,7 +84,8 @@ export default function ContractEdit() {
     },
     phone: {
       required: true,
-      regex: /^[0-9]{9}$/, // Example regex for a 9-digit phone number
+      // regex: /^[0-9]{9}$/, // Example regex for a 9-digit phone number
+      regex: /^(\+|\d?\s?)+(\d{3}?)+\s?(\d{1,})+\s?(\d{1,})/,
     },
     address: {
       required: true,
@@ -313,7 +314,7 @@ export default function ContractEdit() {
                   } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="phone"
                 name="phone"
-                type="text"
+                type="number"
                 value={inputs.phone}
                 placeholder="+569"
               />
