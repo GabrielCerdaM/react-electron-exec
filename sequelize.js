@@ -4,7 +4,7 @@ config();
 // Option 1: Passing a connection URI
 // how .exe app affect with config?
 
-const sequelize = new Sequelize("electron", "root", "mysqldb", {
+const sequelize = new Sequelize("electron", "root", "olxdev9!", {
   host: "127.0.0.1",
   dialect:
     "mysql" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
