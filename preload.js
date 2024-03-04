@@ -1,6 +1,18 @@
 const { contextBridge, ipcRenderer } = require("electron/renderer");
 
 contextBridge.exposeInMainWorld("api", {
+  login: async (email, password) => {
+    try {
+      return await ipcRenderer.invoke('user-operation', {
+        action: 'login',
+        payload: { email, password },
+        id: null
+      })
+    } catch (error) {
+      console.log({ error });
+      return error;
+    }
+  },
   dialog: async (method, config) => {
     return ipcRenderer
       .invoke("dialog", method, config)
@@ -44,7 +56,7 @@ contextBridge.exposeInMainWorld("api", {
       console.log("ipcRenderer invoke contract-operation", { result });
       return result;
     } catch (error) {
-      console.log({error});
+      console.log({ error });
       return error;
     }
   },
