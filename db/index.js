@@ -21,8 +21,14 @@ async function syncDataBase() {
 
 async function insertData() {
   try {
-    const newUser = await User.create({
-      email: "email@email.cl",
+    await User.create({
+      email: "usuario@gmail.cl",
+      password: "1234",
+    });
+
+    await User.create({
+      email: "frosas@gmail.cl",
+      password: "1234",
     });
 
     const contracts = [
@@ -31,7 +37,7 @@ async function insertData() {
         name: "Nombre de prueba asdasd",
         phone: "999999999",
         address: "direccion falsa",
-        email: "correo@email.cl",
+        email: "usuario@gmail.com",
         kindship: "parentezco",
         rutDeceased: "1.111.111-1",
         nameDeceased: "nombre",
@@ -49,7 +55,7 @@ async function insertData() {
         name: "Nombre de prueba dddddd",
         phone: "999999999",
         address: "direccion falsa",
-        email: "correo@email.cl",
+        email: "usuario2@gmail.com",
         kindship: "parentezco",
         rutDeceased: "1.111.111-1",
         nameDeceased: "nombre",
@@ -67,7 +73,7 @@ async function insertData() {
         name: "Nombre de prueba vvvvv",
         phone: "999999999",
         address: "direccion falsa",
-        email: "correo@email.cl",
+        email: "frosas@gmail.com",
         kindship: "parentezco",
         rutDeceased: "1.111.111-1",
         nameDeceased: "nombre",

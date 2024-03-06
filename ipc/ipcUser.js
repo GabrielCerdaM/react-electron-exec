@@ -9,12 +9,17 @@ function ipcUser() {
     ipcMain.handle("user-operation", async (event, data) => {
         try {
             let result;
+
             const { action, payload, id } = data;
             const { email, password } = payload
             console.log({data, payload,email,password});
-            if (!email || !password) {
-                throw new Error('Credenciales invalida')
-            }
+
+            // It should have a validation?
+            // front-end should have. Data received should be
+            // validate.
+            // Validate Handle Login?
+            // ValidateType?
+
             switch (action) {
                 case "login":
                     result = await handleLogin(email, password);

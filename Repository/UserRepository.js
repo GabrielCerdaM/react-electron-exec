@@ -4,7 +4,7 @@ const { User } = require('./../Model/User');
 class UserRepository {
 
     login(email,password) {
-        return User.findAll({
+        return User.findOne({
             where: {
                 [Op.and]: [
                     {

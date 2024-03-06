@@ -10,7 +10,7 @@ contextBridge.exposeInMainWorld("api", {
       })
     } catch (error) {
       console.log({ error });
-      return error;
+      return false;
     }
   },
   dialog: async (method, config) => {

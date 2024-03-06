@@ -1,29 +1,38 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useToken from "../../Components/hooks/useToken";
+import { CurrentUserContext } from "../../App/Context/context";
 
 export default function Login() {
+    const { login } = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { token, login } = useToken()
+    const [error, setError] = useState(false);
+    // const { token, login } = useToken()
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log({ e });
-        console.log({ email, password });
-        const resp = await login(email, password)
+        try {
+            e.preventDefault();
+            console.log({ e });
+            console.log({ email, password });
+            const resp = await login(email, password)
+            setError(!resp);
+        } catch (error) {
+            console.log({ error });
+        }
     }
 
     return <>
-        <section className="flex justify-center align-middle w-full">
+        <section className="flex justify-center w-full pt-36">
             <div className="text-center bg-gray-300 pt-12">
                 <h1 className="">Iniciar Sesion</h1>
-                <p className="text-red-500 text-xs italic pt-2">
-                    "Credenciales incorrectas"
-                </p>
-                <form className="flex flex-col gap-12 p-10 m-5" onSubmit={handleSubmit}>
+                <form className="flex flex-col gap-12 p-10 m-2" onSubmit={handleSubmit}>
                     <input className="border border-black p-3 bg-white" type="text" placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email} />
                     <input className="border border-black p-3 bg-white" type="password" placeholder="password" onChange={(e) => setPassword(e.target.value)} value={password} />
-                    <button className="bg-blue-300 p-3">Login</button>
-
+                    <div className="pt-2">
+                        <button className="bg-blue-300 w-full py-3">Login</button>
+                        {error && (
+                            <p className="text-red-500 text-xs italic">Error de credenciales</p>
+                        )}
+                    </div>
                 </form>
             </div>
         </section>

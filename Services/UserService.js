@@ -5,10 +5,13 @@ class UserService {
     async login(email, password) {
         try {
             const resp = await UserRepository.login(email, password);
-            console.log('login', { resp });
-            return resp;
+            if (!resp) {
+                throw new Error(false)
+            }
+            return true;
         } catch (error) {
             console.log({ error });
+            return false;
         }
     }
 
