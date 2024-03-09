@@ -15,10 +15,7 @@ export default function Home({ children }) {
     return (
         <>
             <header className="p-5 text-center bg-emerald-200">
-                <ul className="flex flex-row justify-center gap-5">
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
+                <ul className="flex flex-row justify-between gap-5">
                     <li>
                         <Link to="/contract">Contratos</Link>
                     </li>

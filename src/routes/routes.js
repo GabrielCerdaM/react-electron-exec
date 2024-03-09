@@ -14,7 +14,7 @@ export const routes = createHashRouter([
     children: [
       {
         path: "/",
-        element: <>Home</>,
+        element: <List />,
       },
       {
         path: "/contract",
