@@ -3,7 +3,14 @@ const { Contract } = require("../Model/Contract");
 
 class ContractRepository {
   getAll() {
-    return Contract.findAll();
+    return Contract.findAll({
+      where: {
+        [Op.eq]: [
+          { deletedAt: null }
+        ]
+        // [Op.eq]: null
+      }
+    });
   }
   getAllFiltered(payload) {
     return Contract.findAll({
@@ -89,7 +96,13 @@ class ContractRepository {
               [Op.like]: `%${payload}%`,
             },
           },
+          // {
+          //   deletedAt: {
+          //     [Op.eq]: null,
+          //   },
+          // },
         ],
+        // [Op.eq]
       },
     });
   }
@@ -110,13 +123,13 @@ class ContractRepository {
   update(id, payload) {
     try {
       return Contract.update({ ...payload }, { where: { id } });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   delete(id) {
     try {
       return Contract.destroy({ where: { id } });
-    } catch (error) {}
+    } catch (error) { }
   }
 }
 
