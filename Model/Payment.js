@@ -9,7 +9,8 @@ Payment.init({
 }, {
     sequelize,
     modelName: "Payment",
-    timestamps: false
+    timestamps: true, // Agrega automáticamente createdAt y updatedAt
+    paranoid: true
 })
 
 console.log("The table for the Payment model was just (re)created!");

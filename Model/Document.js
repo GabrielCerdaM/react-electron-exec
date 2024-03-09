@@ -12,7 +12,8 @@ Document.init(
   {
     sequelize,
     modelName: "Document",
-    timestamps: false,
+    timestamps: true, // Agrega automáticamente createdAt y updatedAt
+    paranoid: true
   }
 );
 

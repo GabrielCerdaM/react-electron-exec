@@ -1,8 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { deleteById } from "./utils/deleteById";
+import useFormatDate from "../../Components/hooks/useFormatDate";
+import { useEffect } from "react";
 
 export default function Item({ contract }) {
   const navigate = useNavigate();
+  const date  = useFormatDate(contract.createdAt);
+  console.log({date});
 
   const deleteItem = async (id) => {
     const resp = await deleteById(id);
@@ -33,13 +37,22 @@ export default function Item({ contract }) {
       navigate("/contract");
     }
   };
+  useEffect(() => {
+    console.log({
+      // date: formatDate(contract.createdAt)
+    });
+  }, [])
   return (
     <>
       <div className="bg-emerald-200 rounded p-5 m-5">
-        <div className="text-center">
+        <div className="flex justify-between text-center">
           <p>
             N Factura:
             <strong> {contract.bill}</strong>
+          </p>
+          <p>
+            Fecha:
+            <strong> {date}</strong>
           </p>
         </div>
         <div className="flex pt-5 justify-around gap-5">
