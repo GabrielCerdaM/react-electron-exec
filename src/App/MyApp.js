@@ -1,29 +1,21 @@
-import { useContext, useState } from 'react';
-import { CurrentUserContext } from './Context/context';
+import { useState } from 'react';
 import { ThemeContext } from './Context/context';
 import WelcomePanel from './WelcomePanel';
 import useToken from '../Components/hooks/useToken';
 import { Outlet } from 'react-router-dom';
+import { CurrentUserProvider } from './Provider/CurrentUserProvider';
 
 export default function MyApp() {
 
     const [theme, setTheme] = useState('light');
-    const [currentUser, setCurrentUser] = useState(null);
-
-    const { token, login } = useToken()
 
     return (
         <ThemeContext.Provider value={theme}>
-            <CurrentUserContext.Provider
-                value={{
-                    token,
-                    login
-                }}
-            >
+            <CurrentUserProvider>
                 <WelcomePanel>
                     <Outlet />
                 </WelcomePanel>
-            </CurrentUserContext.Provider>
+            </CurrentUserProvider>
         </ThemeContext.Provider>
     )
 }

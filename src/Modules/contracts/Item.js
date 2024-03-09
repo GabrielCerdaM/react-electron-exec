@@ -30,7 +30,7 @@ export default function Item({ contract }) {
     console.log({ confirmed });
     if (confirmed === 1) {
       await deleteItem(id);
-      navigate("/");
+      navigate("/contract");
     }
   };
   return (

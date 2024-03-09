@@ -1,20 +1,22 @@
 import { useContext, useState } from "react";
-import useToken from "../../Components/hooks/useToken";
-import { CurrentUserContext } from "../../App/Context/context";
+import { CurrentUserContext } from "../../App/Provider/CurrentUserProvider";
 
 export default function Login() {
     const { login } = useContext(CurrentUserContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
-    // const { token, login } = useToken()
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             console.log({ e });
             console.log({ email, password });
             const resp = await login(email, password)
-            setError(!resp);
+            if (!resp) {
+                setError("Error de acceso");
+            }
         } catch (error) {
             console.log({ error });
         }

@@ -13,14 +13,16 @@ export const routes = createHashRouter([
     element: <MyApp />,
     children: [
       {
+        path: "/",
+        element: <>Home</>,
+      },
+      {
         path: "/contract",
         element: <List />,
-        // children: [
-        //   {
-        //     path: "/create",
-        //     element: <CreateContract />,
-        //   },
-        // ]
+      },
+      {
+        path: "/contract/create",
+        element: <CreateContract />,
       },
       {
         path: "/contract/:contractId",

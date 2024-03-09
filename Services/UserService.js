@@ -6,7 +6,7 @@ class UserService {
         try {
             const resp = await UserRepository.login(email, password);
             if (!resp) {
-                throw new Error(false)
+                throw new Error()
             }
             return true;
         } catch (error) {
