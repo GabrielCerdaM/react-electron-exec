@@ -40,7 +40,7 @@ async function insertData() {
         email: "usuario@gmail.com",
         kindship: "parentezco",
         rutDeceased: "1.111.111-1",
-        nameDeceased: "nombre",
+        nameDeceased: "aaaaaaa",
         dateDeceased: "1990-12-12",
         typeBenefit: "AFP",
         amountBenefit: 550000,
@@ -48,7 +48,7 @@ async function insertData() {
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
         price: 950000,
-        bill: 100,
+        bill: 1,
       },
       {
         rut: "19.412.216-0",
@@ -57,8 +57,8 @@ async function insertData() {
         address: "direccion falsa",
         email: "usuario2@gmail.com",
         kindship: "parentezco",
-        rutDeceased: "1.111.111-1",
-        nameDeceased: "nombre",
+        rutDeceased: "2.222.222-2",
+        nameDeceased: "bbbbbbbb",
         dateDeceased: "1990-12-12",
         typeBenefit: "AFP",
         amountBenefit: 550000,
@@ -66,7 +66,7 @@ async function insertData() {
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
         price: 1600000,
-        bill: 100,
+        bill: 2,
       },
       {
         rut: "19.412.216-0",
@@ -75,8 +75,8 @@ async function insertData() {
         address: "direccion falsa",
         email: "frosas@gmail.com",
         kindship: "parentezco",
-        rutDeceased: "1.111.111-1",
-        nameDeceased: "nombre",
+        rutDeceased: "3.333.333-3",
+        nameDeceased: "ccccccccc",
         dateDeceased: "1990-12-12",
         typeBenefit: "AFP",
         amountBenefit: 550000,
@@ -84,7 +84,7 @@ async function insertData() {
         wakeAddress: "Direccion falsa",
         cementery: "Direccion falsa",
         price: 2000000,
-        bill: 100,
+        bill: 3,
       },
     ];
 
@@ -134,7 +134,9 @@ async function insertData() {
 
     contracts.forEach(async (element) => {
       try {
-        const newContract = await Contract.create(element, {});
+        console.log({element});
+        const newContract = await Contract.create(element);
+        console.log({newContract});
       } catch (error) {
         console.log("insert", { error });
       }
@@ -158,7 +160,6 @@ async function insertData() {
       }
     })
 
-    console.log({ newUser });
     console.log("insertData");
   } catch (error) {
     console.log(error);

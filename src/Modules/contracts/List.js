@@ -73,7 +73,7 @@ export default function List() {
             <div className="w-full md:w-auto">
               <Link
                 className="block text-white bg-blue-700 rounded p-3 text-center"
-                to="/create"
+                to="/contract/create"
               >
                 Nuevo Contrato
               </Link>

@@ -28,7 +28,7 @@ Contract.init(
     sequelize,
     modelName: "Contract", // Nombre del modelo
     timestamps: true, // Agrega automáticamente createdAt y updatedAt
-    paranoid: true
+    paranoid: true,
   }
 );
 

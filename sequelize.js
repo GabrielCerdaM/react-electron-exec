@@ -6,8 +6,11 @@ config();
 
 const sequelize = new Sequelize("electron", "root", "mysqldb", {
   host: "127.0.0.1",
-  dialect:
-    "mysql" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+  dialect: "mysql" /* one of 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql' | 'db2' | 'snowflake' | 'oracle' */,
+  dialectOptions: {
+    timezone: 'America/Santiago',
+  },
+  timezone: 'America/Santiago',
 });
 
 const testConnection = async () => {

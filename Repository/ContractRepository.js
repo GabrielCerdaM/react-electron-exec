@@ -5,8 +5,12 @@ class ContractRepository {
   getAll() {
     return Contract.findAll({
       where: {
-        [Op.eq]: [
-          { deletedAt: null }
+        [Op.and]: [
+          {
+            deletedAt: {
+              [Op.eq]: null
+            }
+          }
         ]
         // [Op.eq]: null
       }
