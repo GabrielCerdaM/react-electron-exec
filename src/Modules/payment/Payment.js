@@ -6,6 +6,7 @@ import { findById } from "./../contracts/utils/findById";
 import { getPaymentByContractId } from "./utils/getPaymentByContractId";
 import { create } from "./utils/create";
 export default function Payment() {
+
   const { contractId } = useParams();
   const { showDialog } = useElectronDialog();
 
@@ -13,33 +14,73 @@ export default function Payment() {
 
   const [contract, setContract] = useState(null);
   const [payments, setPayments] = useState(null);
+  const [pending, setPending] = useState(0);
+
   const getContracts = async (contractId) => {
-    const resp = await findById(contractId);
-    console.log({ resp });
-    if (resp) {
-      const { dataValues } = resp;
-      setContract(dataValues);
-    }
+    return await findById(contractId);
+    // console.log({ resp });
+    // if (resp) {
+    //   const { dataValues } = resp;
+    //   setContract(dataValues);
+    // }
   };
 
   const getPayment = async (contractId) => {
-    const getPayments = await getPaymentByContractId(contractId);
-    console.log({ getPayments });
-    setPayments(getPayments);
+    return await getPaymentByContractId(contractId);
+    // setPayments(getPayments);
+    // return;
   };
+
   useEffect(() => {
-    getContracts(contractId);
-    getPayment(contractId);
+    const getData = async () => {
+      const getContract = await getContracts(contractId);
+      const getPayments = await getPayment(contractId);
+      console.log({ getContract, getPayments });
+      if (getContract) {
+        const { dataValues } = getContract;
+        setContract(dataValues)
+      }
+      if (getPayments) {
+        setPayments(getPayments)
+      }
+    }
+    getData();
   }, [contractId]);
+
+  useEffect(() => {
+    const calculatePendingPrice = () => {
+      let price;
+      if (contract) {
+        price = contract.price;
+        if (contract.benefitRequest) {
+          price = price - contract.amountBenefit;
+        }
+        if (payments && payments.length > 0) {
+          payments.map((p) => {
+            price = price - p.amount;
+          });
+        }
+      }
+
+      setPending(price)
+    };
+    calculatePendingPrice();
+  }, [contract, payments])
+
+  // useEffect(() => {
+  //   calculatePendingPrice();
+  // }, [payments])
 
   const handleChange = (event) => {
     const name = event.target.name;
     let value = event.target.value;
 
     setInputs((values) => ({ ...values, [name]: value }));
+    // handleSubmit(event);
   };
 
   const handleDelete = async (id) => {
+
     const confirmed = await showDialog({
       dialogType: "showMessageBoxSync",
       dialogConfig: {
@@ -50,14 +91,14 @@ export default function Payment() {
         defaultId: 0,
       },
     });
-    console.log({ confirmed });
+
     if (confirmed) {
-      console.log("handleDelete", id);
       const response = await window.api.paymentOperation({
         action: "delete",
         payload: null,
         id,
       });
+      console.log({ response });
       if (response) {
         setPayments((data) => {
           return data.filter((p) => p.id !== response);
@@ -69,42 +110,44 @@ export default function Payment() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      console.log(`price: ${contract.price} pending: ${pending} ${contract.price - inputs.amount}`);
+
       if (!inputs || !inputs.type || !inputs.amount) {
-        showDialog({
+        let config = {
           dialogType: "showMessageBoxSync",
           dialogConfig: {
             message: "Es necesario ingresar tipo de pago y/o monto",
             type: "warning",
-            tile: "Agregando pago/abono",
+            tile: "Agregar pago",
             buttons: ["Aceptar"],
           },
-        });
+        };
+        if (contract.price < pending) {
+          config = {
+            dialogType: "showMessageBoxSync",
+            dialogConfig: {
+              message: "El monto ingresado supera el total permitido",
+              type: "warning",
+              tile: "El monto ingresado supera el total permitido, el monto sera reemplazado por el maximo permitido",
+              buttons: ["Aceptar"],
+            },
+          };
+        }
+        showDialog(config);
         return;
       }
 
-      console.log({ inputs, contractId });
+      console.log({ inputs, contractId })
+
       const resp = create(inputs, contractId);
+      console.log({ resp });
       if (resp) {
-        getPayment(contractId);
+        setPayments(p => console.log(p))
+        console.log({ payments });
       }
     } catch (error) {
       console.log({ error });
     }
-  };
-
-  const calculatePendingPrice = () => {
-    let price;
-    if (contract && payments) {
-      price = contract.price;
-      if (contract.benefitRequest) {
-        price = price - contract.amountBenefit;
-      }
-      payments.map((p) => {
-        price = price - p.amount;
-      });
-    }
-
-    return price;
   };
 
   return (
@@ -172,35 +215,35 @@ export default function Payment() {
                 handleDelete={() => handleDelete(payment.id)}
               />
             ))}
-            <div className="flex flex-col text-center gap-5 p-6 my-5 shadow-xl border-black border-solid border rounded-xl">
-              <div>
-                <p>Cuota mortuoria: {contract.typeBenefit}</p>
-                <p>
-                  {new Intl.NumberFormat("es-cl").format(
-                    contract.amountBenefit
-                  )}
-                </p>
-                {contract.benefitRequest ? (
-                  <p className="text-green-500">Cobrada</p>
-                ) : (
-                  <p className="text-red-500">Pendinte cobro</p>
-                )}
-              </div>
-              <div>
-                <p>
-                  Pendiente de pago:{" "}
-                  {new Intl.NumberFormat("es-cl").format(
-                    calculatePendingPrice()
-                  )}{" "}
-                </p>
-              </div>
-            </div>
           </>
         ) : (
           <>
-            <p>No hay registros</p>
+            <p>Aun no se registran pagos</p>
           </>
         )}
+        {contract ? <>
+          <div className="flex flex-col text-center gap-5 p-6 my-5 shadow-xl border-black border-solid border rounded-xl">
+            <div>
+              <p>Cuota mortuoria: {contract.typeBenefit}</p>
+              <p>
+                {new Intl.NumberFormat("es-cl").format(
+                  contract.amountBenefit
+                )}
+              </p>
+              {contract.benefitRequest ? (
+                <p className="text-green-500">Cobrada</p>
+              ) : (
+                <p className="text-red-500">Pendinte cobro</p>
+              )}
+            </div>
+            <div>
+              <p>
+                Pendiente de pago:{" "}
+                {pending ? new Intl.NumberFormat("es-cl").format(pending) : new Intl.NumberFormat("es-cl").format(contract.price)}{" "}
+              </p>
+            </div>
+          </div>
+        </> : <></>}
       </div>
     </>
   );

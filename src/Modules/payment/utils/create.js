@@ -5,14 +5,10 @@ export const create = async (payment, contractId) => {
       payload: payment,
       id: contractId,
     });
-    console.log({ resp });
     if (resp) {
-      //   const { dataValues } = resp;
-      return true;
+      return resp.dataValues;
     }
-    // return resp;
   } catch (error) {
-    console.log({ error });
-    return false;
+    return null;
   }
 };
