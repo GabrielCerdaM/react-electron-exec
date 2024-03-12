@@ -5,8 +5,7 @@ import { useEffect } from "react";
 
 export default function Item({ contract }) {
   const navigate = useNavigate();
-  const date  = useFormatDate(contract.createdAt);
-  console.log({date});
+  const [date, formatDate] = useFormatDate();
 
   const deleteItem = async (id) => {
     const resp = await deleteById(id);
@@ -38,9 +37,11 @@ export default function Item({ contract }) {
     }
   };
   useEffect(() => {
-    console.log({
-      // date: formatDate(contract.createdAt)
-    });
+  formatDate(contract.createdAt)
+    console.log('Mounted');
+    return () => {
+      console.log('desmounted');
+    }
   }, [])
   return (
     <>

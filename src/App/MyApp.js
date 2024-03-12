@@ -1,22 +1,16 @@
-import { useState } from 'react';
-import { ThemeContext } from './Context/context';
 import WelcomePanel from './WelcomePanel';
-import useToken from '../Components/hooks/useToken';
 import { Outlet } from 'react-router-dom';
 import { CurrentUserProvider } from './Provider/CurrentUserProvider';
 
 export default function MyApp() {
 
-    const [theme, setTheme] = useState('light');
 
     return (
-        <ThemeContext.Provider value={theme}>
-            <CurrentUserProvider>
-                <WelcomePanel>
-                    <Outlet />
-                </WelcomePanel>
-            </CurrentUserProvider>
-        </ThemeContext.Provider>
+        <CurrentUserProvider>
+            <WelcomePanel>
+                <Outlet />
+            </WelcomePanel>
+        </CurrentUserProvider>
     )
 }
 

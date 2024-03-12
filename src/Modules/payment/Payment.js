@@ -5,6 +5,7 @@ import useElectronDialog from "../../Components/hooks/useElectronDialog";
 import { findById } from "./../contracts/utils/findById";
 import { getPaymentByContractId } from "./utils/getPaymentByContractId";
 import { create } from "./utils/create";
+import useFormatDate from "../../Components/hooks/useFormatDate";
 export default function Payment() {
 
   const { contractId } = useParams();
@@ -16,22 +17,17 @@ export default function Payment() {
   const [payments, setPayments] = useState(null);
   const [pending, setPending] = useState(0);
 
+
   const getContracts = async (contractId) => {
     return await findById(contractId);
-    // console.log({ resp });
-    // if (resp) {
-    //   const { dataValues } = resp;
-    //   setContract(dataValues);
-    // }
   };
 
   const getPayment = async (contractId) => {
     return await getPaymentByContractId(contractId);
-    // setPayments(getPayments);
-    // return;
   };
 
   useEffect(() => {
+
     const getData = async () => {
       const getContract = await getContracts(contractId);
       const getPayments = await getPayment(contractId);
@@ -67,9 +63,6 @@ export default function Payment() {
     calculatePendingPrice();
   }, [contract, payments])
 
-  // useEffect(() => {
-  //   calculatePendingPrice();
-  // }, [payments])
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -110,10 +103,11 @@ export default function Payment() {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
+      let config;
       console.log(`price: ${contract.price} pending: ${pending} ${contract.price - inputs.amount}`);
 
       if (!inputs || !inputs.type || !inputs.amount) {
-        let config = {
+        config = {
           dialogType: "showMessageBoxSync",
           dialogConfig: {
             message: "Es necesario ingresar tipo de pago y/o monto",
@@ -122,17 +116,21 @@ export default function Payment() {
             buttons: ["Aceptar"],
           },
         };
-        if (contract.price < pending) {
-          config = {
-            dialogType: "showMessageBoxSync",
-            dialogConfig: {
-              message: "El monto ingresado supera el total permitido",
-              type: "warning",
-              tile: "El monto ingresado supera el total permitido, el monto sera reemplazado por el maximo permitido",
-              buttons: ["Aceptar"],
-            },
-          };
-        }
+        showDialog(config);
+        return;
+      }
+
+      console.log({ price: parseInt(contract.price), amount: parseInt(inputs.amount), price2: (contract.price) < parseInt(inputs.amount) });
+      if (parseInt(contract.price) < parseInt(inputs.amount)) {
+        config = {
+          dialogType: "showMessageBoxSync",
+          dialogConfig: {
+            message: "El monto ingresado supera el total permitido",
+            type: "warning",
+            tile: "El monto ingresado supera el total permitido, el monto sera reemplazado por el maximo permitido",
+            buttons: ["Aceptar"],
+          },
+        };
         showDialog(config);
         return;
       }
