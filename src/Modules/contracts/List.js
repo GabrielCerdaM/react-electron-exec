@@ -24,6 +24,10 @@ export default function List() {
     const name = event.target.name;
     let value = event.target.value;
     setSearch(value);
+    getAllFiltered(search).then(resp => {
+      console.log({ resp });
+      setContracts(resp)
+    });
   };
   // const { contracts } = useLoaderData();
   // const handleSubmit = (e) => {
@@ -32,7 +36,7 @@ export default function List() {
 
   useEffect(() => {
     getAll().then(resp => {
-      console.log({resp});
+      console.log({ resp });
       // const data = resp.map((c => c.dataValues));
       // console.log({data });
       setContracts(resp)

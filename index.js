@@ -18,7 +18,7 @@ const createWindow = () => {
 
   // const url = path.join(__dirname, 'build', 'index.html');
   try {
-    if (true) {
+    if (false) {
       window.loadURL("http://localhost:3000");
     } else {
       const url = path.join(__dirname, "build", "index.html");
