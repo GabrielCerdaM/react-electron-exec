@@ -43,9 +43,11 @@ export function Documents() {
         payload: docs,
         id: contractId,
       });
-
-      console.log('add', { resp });
-      navigate('/')
+      console.log({ resp });
+      if (!resp) {
+        // console.log('add', { resp });
+        navigate('/')
+      }
     } catch (error) {
       console.log({ error });
     }

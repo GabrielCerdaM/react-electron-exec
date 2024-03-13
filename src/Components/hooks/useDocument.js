@@ -13,7 +13,7 @@ const useDocument = (id) => {
       });
 
       if (getFiles && getFiles.length > 0) {
-        const files = getFiles.map(({name,path}) => {
+        const files = getFiles.map(({ name, path }) => {
           return { name, path };
         });
 

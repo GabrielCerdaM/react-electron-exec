@@ -453,6 +453,7 @@ export default function CreateContract() {
                 id="typeBenefit"
                 name="typeBenefit"
                 value={inputs.typeBenefit}
+                placeholder="inp / afp"
                 type="text"
               />
               <p className="text-red-500 text-xs italic">

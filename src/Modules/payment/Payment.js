@@ -5,13 +5,12 @@ import useElectronDialog from "../../Components/hooks/useElectronDialog";
 import { findById } from "./../contracts/utils/findById";
 import { getPaymentByContractId } from "./utils/getPaymentByContractId";
 import { create } from "./utils/create";
-import useFormatDate from "../../Components/hooks/useFormatDate";
 export default function Payment() {
 
   const { contractId } = useParams();
   const { showDialog } = useElectronDialog();
 
-  const [inputs, setInputs] = useState(null);
+  const [inputs, setInputs] = useState({ type: null, amount: 0 });
 
   const [contract, setContract] = useState(null);
   const [payments, setPayments] = useState(null);
@@ -69,7 +68,6 @@ export default function Payment() {
     let value = event.target.value;
 
     setInputs((values) => ({ ...values, [name]: value }));
-    // handleSubmit(event);
   };
 
   const handleDelete = async (id) => {
@@ -104,7 +102,6 @@ export default function Payment() {
     try {
       e.preventDefault();
       let config;
-      console.log(`price: ${contract.price} pending: ${pending} ${contract.price - inputs.amount}`);
 
       if (!inputs || !inputs.type || !inputs.amount) {
         config = {
@@ -120,7 +117,6 @@ export default function Payment() {
         return;
       }
 
-      console.log({ price: parseInt(contract.price), amount: parseInt(inputs.amount), price2: (contract.price) < parseInt(inputs.amount) });
       if (parseInt(contract.price) < parseInt(inputs.amount)) {
         config = {
           dialogType: "showMessageBoxSync",
@@ -135,13 +131,13 @@ export default function Payment() {
         return;
       }
 
-      console.log({ inputs, contractId })
-
-      const resp = create(inputs, contractId);
-      console.log({ resp });
+      const resp = await create(inputs, contractId);
       if (resp) {
-        setPayments(p => console.log(p))
-        console.log({ payments });
+        const getPays = await getPayment(contractId);
+        if (getPays) {
+          setPayments(getPays)
+          setInputs((inputs) => ({ ...inputs, amount: 0 }))
+        }
       }
     } catch (error) {
       console.log({ error });
@@ -159,6 +155,7 @@ export default function Payment() {
                   name="type"
                   onChange={handleChange}
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                  value={inputs.type}
                 >
                   <option
                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -191,6 +188,7 @@ export default function Payment() {
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                   type="number"
                   placeholder="Monto"
+                  value={inputs.amount}
                 />
                 <button
                   type="submit"

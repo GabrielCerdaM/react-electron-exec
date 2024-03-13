@@ -91,7 +91,6 @@ function ipcDocument() {
 
   const handleCopyFile = async (id, payload) => {
     try {
-      // console.log({ payload });
       if (payload && payload.length > 0) {
         const response = await ContractService.findById(id);
         console.log({ response });
@@ -109,9 +108,6 @@ function ipcDocument() {
           });
         }
       }
-      // payload.map(file => {
-
-      // })
     } catch (error) {
       console.log({ error });
     }
