@@ -16,7 +16,7 @@ const createWindow = () => {
 
   // Load the React app
 
-  // const url = path.join(__dirname, 'build', 'index.html');
+  // const url = pathw.join(__dirname, 'build', 'index.html');
   try {
     if (false) {
       window.loadURL("http://localhost:3000");
@@ -35,16 +35,16 @@ const { ipcHandler } = require("./ipc/ipcHandler");
 ipcHandler();
 
 app.whenReady().then(() => {
-  syncDataBase().then((resp) => {
-    console.log("syncDataBase", { resp });
-    insertData()
-      .then((resp) => {
-        console.log("insertData", { resp });
-      })
-      .catch((error) => console.log({ error }));
-    createWindow();
-  });
-  // createWindow();
+  // syncDataBase().then((resp) => {
+  //   console.log("syncDataBase", { resp });
+  //   insertData()
+  //     .then((resp) => {
+  //       console.log("insertData", { resp });
+  //     })
+  //     .catch((error) => console.log({ error }));
+  //   createWindow();
+  // });
+  createWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

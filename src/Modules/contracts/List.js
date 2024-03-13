@@ -20,14 +20,19 @@ export default function List() {
     });
   };
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     const name = event.target.name;
     let value = event.target.value;
     setSearch(value);
-    getAllFiltered(search).then(resp => {
-      console.log({ resp });
+    const resp = await getAllFiltered(search)
+    console.log({resp});
+    if(resp){
       setContracts(resp)
-    });
+    }
+    // .then(resp => {
+    //   console.log({ resp });
+    //   setContracts(resp)
+    // });
   };
   // const { contracts } = useLoaderData();
   // const handleSubmit = (e) => {
