@@ -73,30 +73,30 @@ export default function Payment() {
 
   const handleDelete = async (id) => {
 
-    const confirmed = await showDialog({
-      dialogType: "showMessageBoxSync",
-      dialogConfig: {
-        message: "Estas seguro que deseas eliminar este pago?",
-        type: "question",
-        tile: "Eliminando pago",
-        buttons: ["Cancelar", "Eliminar"],
-        defaultId: 0,
-      },
-    });
+    // const confirmed = await showDialog({
+    //   dialogType: "showMessageBoxSync",
+    //   dialogConfig: {
+    //     message: "Estas seguro que deseas eliminar este pago?",
+    //     type: "question",
+    //     tile: "Eliminando pago",
+    //     buttons: ["Cancelar", "Eliminar"],
+    //     defaultId: 0,
+    //   },
+    // });
 
-    if (confirmed) {
-      const response = await window.api.paymentOperation({
-        action: "delete",
-        payload: null,
-        id,
+    // if (confirmed) {
+    const response = await window.api.paymentOperation({
+      action: "delete",
+      payload: null,
+      id,
+    });
+    console.log({ response });
+    if (response) {
+      setPayments((data) => {
+        return data.filter((p) => p.id !== response);
       });
-      console.log({ response });
-      if (response) {
-        setPayments((data) => {
-          return data.filter((p) => p.id !== response);
-        });
-      }
     }
+    // }
   };
 
   const handleSubmit = async (e) => {
@@ -154,6 +154,12 @@ export default function Payment() {
           <div className="flex flex-col justify-between items-center gap-8 mb-4 md:flex-row">
             <div className="w-full">
               <form onSubmit={handleSubmit}>
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="type"
+                >
+                  Método de pago
+                </label>
                 <select
                   name="type"
                   onChange={handleChange}
@@ -185,6 +191,12 @@ export default function Payment() {
                     Transferencia
                   </option>
                 </select>
+                <label
+                  className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                  htmlFor="type"
+                >
+                  Monto del pago
+                </label>
                 <input
                   name="amount"
                   onChange={handleChange}

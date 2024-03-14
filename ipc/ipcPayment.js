@@ -56,7 +56,7 @@ function ipcPayment() {
     let result;
     switch (action) {
       case "add":
-        result = handleCreate(id, payload)
+        result = await handleCreate(id, payload)
         break;
       case "findByContractId":
         result = await handleFindByContractId(id);

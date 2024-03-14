@@ -37,15 +37,15 @@ ipcHandler();
 
 app.whenReady().then(() => {
   // syncDataBase().then((resp) => {
-    //   console.log("syncDataBase", { resp });
-    //   insertData()
-    //     .then((resp) => {
-    //       console.log("insertData", { resp });
-    //     })
-    //     .catch((error) => console.log({ error }));
-      createWindow();
+  //   //   console.log("syncDataBase", { resp });
+  //     insertData()
+  //       .then((resp) => {
+  //         console.log("insertData", { resp });
+  //       })
+  //       .catch((error) => console.log({ error }));
+  //     createWindow();
   // });
-  // createWindow();
+  createWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

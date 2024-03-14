@@ -16,10 +16,12 @@
 
 
 -- Volcando estructura de base de datos para electron
+DROP DATABASE IF EXISTS `electron`;
 CREATE DATABASE IF NOT EXISTS `electron` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `electron`;
 
 -- Volcando estructura para tabla electron.contracts
+DROP TABLE IF EXISTS `contracts`;
 CREATE TABLE IF NOT EXISTS `contracts` (
   `id` int NOT NULL AUTO_INCREMENT,
   `rut` varchar(255) DEFAULT NULL,
@@ -44,11 +46,12 @@ CREATE TABLE IF NOT EXISTS `contracts` (
   `updatedAt` datetime NOT NULL,
   `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla electron.documents
+DROP TABLE IF EXISTS `documents`;
 CREATE TABLE IF NOT EXISTS `documents` (
   `id` int NOT NULL AUTO_INCREMENT,
   `path` varchar(255) DEFAULT NULL,
@@ -66,6 +69,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
 -- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla electron.payments
+DROP TABLE IF EXISTS `payments`;
 CREATE TABLE IF NOT EXISTS `payments` (
   `id` int NOT NULL AUTO_INCREMENT,
   `type` varchar(255) DEFAULT NULL,
@@ -77,11 +81,12 @@ CREATE TABLE IF NOT EXISTS `payments` (
   PRIMARY KEY (`id`),
   KEY `ContractId` (`ContractId`),
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`ContractId`) REFERENCES `contracts` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
 -- Volcando estructura para tabla electron.users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) DEFAULT NULL,
@@ -90,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updatedAt` datetime NOT NULL,
   `deletedAt` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
