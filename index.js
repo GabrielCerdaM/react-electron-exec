@@ -12,7 +12,8 @@ const createWindow = () => {
     },
   });
 
-  window.openDevTools();
+  // window.openDevTools();
+  // window.dev
 
   // Load the React app
 
@@ -42,9 +43,9 @@ app.whenReady().then(() => {
     //       console.log("insertData", { resp });
     //     })
     //     .catch((error) => console.log({ error }));
-    //   createWindow();
+      createWindow();
   // });
-  createWindow();
+  // createWindow();
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();

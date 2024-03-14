@@ -139,7 +139,7 @@ export default function Payment() {
         console.log({ getPays });
         if (getPays) {
           setPayments(getPays)
-          setInputs(initInputs)
+          // setInputs(initInputs)
         }
       }
     } catch (error) {

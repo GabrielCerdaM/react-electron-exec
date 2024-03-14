@@ -23,8 +23,10 @@ export default function CreateContract() {
       dateDeceased: "2024-02-10",
       typeBenefit: "AFP",
       amountBenefit: "999999",
+      wakeName: "Direccion falsa",
       wakeAddress: "Direccion falsa",
-      cementery: "Cementerio direccion prueba",
+      cementeryName: "Cementerio direccion prueba",
+      cementeryAddress: "Cementerio direccion prueba",
       price: "1000",
     };
     setInputs((values) => ({ ...values, ...mock }));
@@ -43,8 +45,10 @@ export default function CreateContract() {
     dateDeceased: "",
     typeBenefit: "",
     amountBenefit: "",
+    wakeName: "",
     wakeAddress: "",
-    cementery: "",
+    cementeryName: "",
+    cementeryAddress: "",
     price: "",
   });
 
@@ -90,16 +94,23 @@ export default function CreateContract() {
       date: true, // You can implement date validation logic here
     },
     typeBenefit: {
-      required: true,
+      required: false,
     },
     amountBenefit: {
       required: false,
       numeric: true, // You can implement numeric validation logic here
     },
+    wakeName: {
+      required: false,
+    },
     wakeAddress: {
       required: false,
     },
-    cementery: {
+    cementeryName: {
+      required: false,
+    },
+
+    cementeryAddress: {
       required: false,
     },
   };
@@ -117,8 +128,10 @@ export default function CreateContract() {
     dateDeceased: "",
     typeBenefit: "",
     amountBenefit: "",
+    wakeName: "",
     wakeAddress: "",
-    cementery: "",
+    cementeryName: "",
+    cementeryAddress: "",
     price: "",
   });
 
@@ -172,8 +185,10 @@ export default function CreateContract() {
 
         // Check each validation rule for the current field
         if (rules) {
-          if (!rules.required && value.trim().length <= 0) {
-            errors[fieldName] = "Este campo es obligatorio";
+          console.log({ rules });
+          if (rules.required) {
+            if (value.trim().length <= 0)
+              errors[fieldName] = "Este campo es obligatorio";
           }
 
           if (rules.minLength && value.trim().length < rules.minLength) {
@@ -193,12 +208,12 @@ export default function CreateContract() {
 
   return (
     <>
-      <button
+      {/* <button
         onClick={(e) => mockData(e)}
         className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Mock Data
-      </button>
+      </button> */}
       <form onSubmit={handleSubmit}>
         <div className="p-3 m-3">
           <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -210,13 +225,12 @@ export default function CreateContract() {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="rut"
               >
-                Numero Factura
+                Número Factura
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.bill ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.bill ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="bill"
                 name="bill"
                 type="text"
@@ -243,9 +257,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.rut ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.rut ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="rut"
                 name="rut"
                 type="text"
@@ -265,9 +278,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.name ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.name ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="name"
                 name="name"
                 type="text"
@@ -283,13 +295,12 @@ export default function CreateContract() {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-first-name"
               >
-                Telefono
+                Teléfono
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.phone ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.phone ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="phone"
                 name="phone"
                 type="number"
@@ -305,13 +316,12 @@ export default function CreateContract() {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-last-name"
               >
-                Direccion
+                Dirección
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.address ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.address ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="address"
                 name="address"
                 type="text"
@@ -331,9 +341,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.email ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.email ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="email"
                 name="email"
                 type="text"
@@ -349,13 +358,12 @@ export default function CreateContract() {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-last-name"
               >
-                Parentesco
+                Parentezco
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.kindship ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.kindship ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="kindship"
                 name="kindship"
                 type="text"
@@ -382,9 +390,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.rutDeceased ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
+                className={`${errors.rutDeceased ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                 id="rutDeceased"
                 name="rutDeceased"
                 type="text"
@@ -404,9 +411,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.nameDeceased ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.nameDeceased ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="nameDeceased"
                 name="nameDeceased"
                 type="text"
@@ -426,9 +432,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.dateDeceased ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.dateDeceased ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="dateDeceased"
                 name="dateDeceased"
                 value={inputs.dateDeceased}
@@ -447,9 +452,8 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.typeBenefit ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.typeBenefit ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="typeBenefit"
                 name="typeBenefit"
                 value={inputs.typeBenefit}
@@ -466,13 +470,12 @@ export default function CreateContract() {
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="grid-last-name"
               >
-                Monto Beneficio
+                Monto Beneficio ($)
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.amountBenefit ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.amountBenefit ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="amountBenefit"
                 name="amountBenefit"
                 value={inputs.amountBenefit}
@@ -486,7 +489,7 @@ export default function CreateContract() {
         </div>
         <div className="p-3 m-3">
           <h1 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-            Informacion Servicio
+            Información Servicio
           </h1>
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3">
@@ -498,18 +501,37 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.wakeAddress ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                className={`${errors.wakeName ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                id="wakeName"
+                name="wakeName"
+                value={inputs.wakeName}
+                type="type"
+                placeholder="Nombre Velatorio"
+              />
+              <p className="text-red-500 text-xs italic">
+                {errors.wakeName ? errors.wakeName : ""}
+              </p>
+
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="grid-last-name"
+              >
+                Dirección Velatorio
+              </label>
+              <input
+                onChange={(e) => handleChange(e)}
+                className={`${errors.wakeAddress ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
                 id="wakeAddress"
                 name="wakeAddress"
                 value={inputs.wakeAddress}
                 type="type"
+                placeholder="Dirección velatorio"
               />
               <p className="text-red-500 text-xs italic">
                 {errors.wakeAddress ? errors.wakeAddress : ""}
-              </p>
-            </div>
+              </p>            </div>
 
             <div className="w-full md:w-1/2 px-3">
               <label
@@ -520,24 +542,42 @@ export default function CreateContract() {
               </label>
               <input
                 onChange={(e) => handleChange(e)}
-                className={`${
-                  errors.cementery ? "border-red-500" : "border-gray-500"
-                } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
-                id="cementery"
-                name="cementery"
-                value={inputs.cementery}
+                className={`${errors.cementeryName ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                id="cementeryName"
+                name="cementeryName"
+                value={inputs.cementeryName}
                 type="type"
+                placeholder="Nombre cementerio"
               />
               <p className="text-red-500 text-xs italic">
-                {errors.cementery ? errors.cementery : ""}
+                {errors.cementeryName ? errors.cementeryName : ""}
+              </p>
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="grid-last-name"
+              >
+                Dirección Cementerio
+              </label>
+              <input
+                onChange={(e) => handleChange(e)}
+                className={`${errors.cementeryAddress ? "border-red-500" : "border-gray-500"
+                  } appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+                id="cementeryAddress"
+                name="cementeryAddress"
+                value={inputs.cementeryAddress}
+                type="type"
+                placeholder="Dirección Cementerio"
+              />
+              <p className="text-red-500 text-xs italic">
+                {errors.cementeryAddress ? errors.cementeryAddress : ""}
               </p>
             </div>
           </div>
           <div className="flex flex-row-reverse">
             <input
-              className={`${
-                errors.price ? "border-red-500" : "border-gray-500"
-              } appearance-none block mx-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
+              className={`${errors.price ? "border-red-500" : "border-gray-500"
+                } appearance-none block mx-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500`}
               onChange={(e) => handleChange(e)}
               name="price"
               id="price"

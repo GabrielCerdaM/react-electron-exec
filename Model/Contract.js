@@ -20,8 +20,10 @@ Contract.init(
     benefitRequest: DataTypes.BOOLEAN,
     typeBenefit: DataTypes.STRING,
     amountBenefit: DataTypes.FLOAT,
+    wakeName: DataTypes.STRING,
     wakeAddress: DataTypes.STRING,
-    cementery: DataTypes.STRING,
+    cementeryName: DataTypes.STRING,
+    cementeryAddress: DataTypes.STRING,
     price: DataTypes.STRING,
   },
   {
