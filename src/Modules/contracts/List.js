@@ -57,7 +57,7 @@ export default function List() {
                 Lista de contratos
               </h5>
               <p className="block mt-1 font-sans text-base antialiased font-normal leading-relaxed text-gray-700">
-                Aqui encontraras los ultimos contratos registrados
+                Aqui encontrarás los últimos contratos registrados
               </p>
             </div>
             <div className="w-full md:w-auto">
@@ -75,7 +75,7 @@ export default function List() {
                   type="submit"
                   className="px-5 block text-white bg-blue-700 rounded text-center"
                 >
-                  Search
+                  Buscar
                 </button>
               </form>
             </div>

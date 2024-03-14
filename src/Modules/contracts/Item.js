@@ -37,7 +37,7 @@ export default function Item({ contract }) {
     }
   };
   useEffect(() => {
-  formatDate(contract.createdAt)
+    formatDate(contract.createdAt)
     console.log('Mounted');
     return () => {
       console.log('desmounted');
@@ -52,7 +52,7 @@ export default function Item({ contract }) {
             <strong> {contract.bill}</strong>
           </p>
           <p>
-            Fecha:
+            Fecha creación contrato:
             <strong> {date}</strong>
           </p>
         </div>
@@ -63,11 +63,11 @@ export default function Item({ contract }) {
               <strong> {contract.name}</strong>
             </p>
             <p>
-              Telefono:
+              Teléfono:
               <strong> {contract.phone}</strong>
             </p>
             <p>
-              Direccion:
+              Dirección:
               <strong> {contract.address}</strong>
             </p>
             <p>
@@ -84,17 +84,28 @@ export default function Item({ contract }) {
             </p>
           </div>
         </div>
-        <div className="text-center pt-5">
+        <div className="flex py-5 gap-5 justify-between text-left">
           <div>
-            <p>
+            <p className="py-1 px-3">
               Velatorio:
+              <strong> {contract.wakeName}</strong>
+            </p>
+            <p className="py-1 px-3">
+              Dirección Velatorio:
               <strong> {contract.wakeAddress}</strong>
             </p>
-            <p>
+          </div>
+          <div>
+            <p className="py-1 px-3">
               Cementerio:
-              <strong> {contract.cementery}</strong>
+              <strong> {contract.cementeryName}</strong>
+            </p>
+            <p className="py-1 px-3">
+              Dirección Cementerio:
+              <strong> {contract.cementeryAddress}</strong>
             </p>
           </div>
+
         </div>
         <div className="flex justify-center items-center gap-5 pt-5">
           <Link to={`/contract/${contract.id}`}>Ver Detalle</Link>

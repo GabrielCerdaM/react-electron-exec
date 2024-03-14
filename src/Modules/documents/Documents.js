@@ -30,24 +30,22 @@ export function Documents() {
       if (docs && docs.length < 1) {
         throw new Error("No se han seleccionado archivos");
       }
-      const respFile = await window.api.documentOperation({
+      await window.api.documentOperation({
         action: 'copyFiles',
         payload: docs,
         id: contractId
       });
 
-      console.log({ respFile });
 
-      const resp = await window.api.documentOperation({
+      await window.api.documentOperation({
         action: "add",
         payload: docs,
         id: contractId,
       });
-      console.log({ resp });
-      if (!resp) {
-        // console.log('add', { resp });
-        navigate('/')
-      }
+      getDocuments(contractId);
+
+      // navigate(`/document/${contractId}`)
+      // navigate('.')
     } catch (error) {
       console.log({ error });
     }

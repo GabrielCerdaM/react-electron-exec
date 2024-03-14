@@ -2,22 +2,22 @@ const { ipcMain } = require("electron");
 const PaymentService = require('../Services/PaymentService');
 
 function ipcPayment() {
-  const handleGetAll = async () => {
-    // return await ContractService.getAll();
-  };
+  // const handleGetAll = async () => {
+  //   return await PaymentService.getAll();
+  // };
 
-  const handleGetAllFiltered = async (payload) => {
-    return await ContractService.getAllFiltered(payload);
-  };
+  // const handleGetAllFiltered = async (payload) => {
+  //   return await PaymentService.getAllFiltered(payload);
+  // };
 
-  const handleFind = async (payload) => {
-    console.log("handleFind", { payload });
-    return await ContractService.getAll();
-  };
+  // const handleFind = async (payload) => {
+  //   console.log("handleFind", { payload });
+  //   return await PaymentService.getAll();
+  // };
 
-  const handleFindById = async (id) => {
-    return await ContractService.findById(id);
-  };
+  // const handleFindById = async (id) => {
+  //   return await PaymentService.findById(id);
+  // };
 
   const handleFindByContractId = async (contractId) => {
     try {
@@ -27,7 +27,7 @@ function ipcPayment() {
         throw new Error('Error al obtener pagos');
       }
       const payments = resp.map(payment => payment.dataValues)
-      console.log({payments});
+      console.log({ payments });
       return payments;
     } catch (error) {
       console.log({ error });
@@ -35,27 +35,28 @@ function ipcPayment() {
   }
 
   const handleCreate = async (contractId, payload) => {
-    // return await ContractService.create(payload);
+    // return await PaymentService.create(payload);
     return await PaymentService.create(contractId, payload)
   };
   const handleUpdate = async ({ id, payload }) => {
-    return await ContractService.update(id, payload);
+    return await PaymentService.update(id, payload);
   };
   const handleDelete = async (id) => {
     const response = await PaymentService.delete(id);
     console.log({ response });
     return id;
-    // return await ContractService.delete(id);
+    // return await PaymentService.delete(id);
   };
 
   // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // In the main process
   ipcMain.handle("payment-operation", async (event, data) => {
     const { action, payload, id } = data;
+    console.log({ payload, id });
     let result;
     switch (action) {
       case "add":
-        result = handleCreate(id, payload)
+        result = await handleCreate(id, payload)
         break;
       case "findByContractId":
         result = await handleFindByContractId(id);

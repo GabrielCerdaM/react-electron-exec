@@ -12,13 +12,14 @@ const createWindow = () => {
     },
   });
 
-  window.openDevTools();
+  // window.openDevTools();
+  // window.dev
 
   // Load the React app
 
   // const url = pathw.join(__dirname, 'build', 'index.html');
   try {
-    if (false) {
+    if (true) {
       window.loadURL("http://localhost:3000");
     } else {
       const url = path.join(__dirname, "build", "index.html");
@@ -36,13 +37,13 @@ ipcHandler();
 
 app.whenReady().then(() => {
   // syncDataBase().then((resp) => {
-  //   console.log("syncDataBase", { resp });
-  //   insertData()
-  //     .then((resp) => {
-  //       console.log("insertData", { resp });
-  //     })
-  //     .catch((error) => console.log({ error }));
-  //   createWindow();
+  //   //   console.log("syncDataBase", { resp });
+  //     insertData()
+  //       .then((resp) => {
+  //         console.log("insertData", { resp });
+  //       })
+  //       .catch((error) => console.log({ error }));
+  //     createWindow();
   // });
   createWindow();
 
