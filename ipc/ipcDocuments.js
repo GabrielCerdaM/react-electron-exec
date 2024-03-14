@@ -1,4 +1,4 @@
-const { ipcMain, dialog } = require("electron");
+const { ipcMain } = require("electron");
 const DocumentService = require("../Services/DocumentService");
 const ContractService = require("../Services/ContractService");
 const path = require("path");

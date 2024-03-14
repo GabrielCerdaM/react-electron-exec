@@ -10,7 +10,8 @@ export default function Payment() {
   const { contractId } = useParams();
   const { showDialog } = useElectronDialog();
 
-  const [inputs, setInputs] = useState({ type: null, amount: 0 });
+  const initInputs = { type: null, amount: null }
+  const [inputs, setInputs] = useState(initInputs);
 
   const [contract, setContract] = useState(null);
   const [payments, setPayments] = useState(null);
@@ -130,13 +131,15 @@ export default function Payment() {
         showDialog(config);
         return;
       }
-
+      console.log({ contractId });
       const resp = await create(inputs, contractId);
+      console.log('create', { resp });
       if (resp) {
         const getPays = await getPayment(contractId);
+        console.log({ getPays });
         if (getPays) {
           setPayments(getPays)
-          setInputs((inputs) => ({ ...inputs, amount: 0 }))
+          setInputs(initInputs)
         }
       }
     } catch (error) {
