@@ -26,7 +26,7 @@ export default function Payment() {
   };
 
   useEffect(() => {
-
+    console.log({contractId});
     const getData = async () => {
       const getContract = await getContracts(contractId);
       const getPayments = await getPayment(contractId);
@@ -132,11 +132,13 @@ export default function Payment() {
       }
 
       const resp = await create(inputs, contractId);
+      console.log({resp});
       if (resp) {
         const getPays = await getPayment(contractId);
+        console.log({getPays});
         if (getPays) {
           setPayments(getPays)
-          setInputs((inputs) => ({ ...inputs, amount: 0 }))
+          // setInputs((inputs) => ({ ...inputs, amount: 0 }))
         }
       }
     } catch (error) {
