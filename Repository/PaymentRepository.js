@@ -1,4 +1,4 @@
-const { Payment } = require("../Model/Payment");
+const Payment = require("../Model/Payment");
 class PaymentRepository {
   async getAll() {
     return await Payment.findAll();
@@ -9,6 +9,7 @@ class PaymentRepository {
   }  
 
   async create(payload) {
+    console.log('repository',{payload});
     return await Payment.create(payload)
   }
 

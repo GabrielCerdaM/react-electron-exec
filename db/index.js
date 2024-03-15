@@ -8,8 +8,8 @@ async function syncDataBase() {
   try {
     Document.belongsTo(Contract);
     Payment.belongsTo(Contract);
-    Contract.hasMany(Document, { as: "documents" });
     Contract.hasMany(Payment);
+    Contract.hasMany(Document, { as: "documents" });
 
     await sequelize.sync({ force: true }); // El uso de force: true eliminará las tablas existentes (ten cuidado en producción)
 

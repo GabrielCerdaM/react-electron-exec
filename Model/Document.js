@@ -8,6 +8,7 @@ Document.init(
     path: DataTypes.STRING,
     name: DataTypes.STRING,
     ext: DataTypes.STRING,
+    ContractId: DataTypes.INTEGER,
   },
   {
     sequelize,

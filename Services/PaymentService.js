@@ -24,7 +24,8 @@ class PaymentService {
 
     async create(id, payload) {
         try {
-            return await PaymentRepository.create({ ...payload, ContractId: id });
+            console.log('service',{id,payload});
+            return await PaymentRepository.create({ ...payload, ContractId: parseInt(id)});
         } catch (error) {
             console.log({ error });
         }

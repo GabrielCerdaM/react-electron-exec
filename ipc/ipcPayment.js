@@ -36,6 +36,7 @@ function ipcPayment() {
 
   const handleCreate = async (contractId, payload) => {
     // return await PaymentService.create(payload);
+    console.log('ipc',{contractId,payload});
     return await PaymentService.create(contractId, payload)
   };
   const handleUpdate = async ({ id, payload }) => {
@@ -52,7 +53,7 @@ function ipcPayment() {
   // In the main process
   ipcMain.handle("payment-operation", async (event, data) => {
     const { action, payload, id } = data;
-    console.log({ payload, id });
+    // console.log({ payload, id });
     let result;
     switch (action) {
       case "add":

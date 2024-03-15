@@ -10,8 +10,8 @@ export default function Payment() {
   const { contractId } = useParams();
   const { showDialog } = useElectronDialog();
 
-  const initInputs = { type: null, amount: null }
-  const [inputs, setInputs] = useState(initInputs);
+  // const initInputs = { type: null, amount: null }
+  const [inputs, setInputs] = useState(null);
 
   const [contract, setContract] = useState(null);
   const [payments, setPayments] = useState(null);
@@ -27,10 +27,9 @@ export default function Payment() {
   };
 
   useEffect(() => {
-    console.log({ contractId });
-    const getData = async () => {
-      const getContract = await getContracts(contractId);
-      const getPayments = await getPayment(contractId);
+    const getData = async (id) => {
+      const getContract = await getContracts(id);
+      const getPayments = await getPayment(id);
       console.log({ getContract, getPayments });
       if (getContract) {
         const { dataValues } = getContract;
@@ -40,7 +39,7 @@ export default function Payment() {
         setPayments(getPayments)
       }
     }
-    getData();
+    getData(contractId);
   }, [contractId]);
 
   useEffect(() => {
@@ -133,8 +132,10 @@ export default function Payment() {
       }
       console.log({ contractId });
       const resp = await create(inputs, contractId);
+      console.log({ contractId, resp });
       if (resp) {
         const getPays = await getPayment(contractId);
+        console.log({ contractId, getPays });
         if (getPays) {
           setPayments(getPays)
         }
@@ -161,7 +162,6 @@ export default function Payment() {
                   name="type"
                   onChange={handleChange}
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
-                  value={inputs.type}
                 >
                   <option
                     className={`appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
@@ -200,7 +200,6 @@ export default function Payment() {
                   className={`appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white`}
                   type="number"
                   placeholder="Monto"
-                  value={inputs.amount}
                 />
                 <button
                   type="submit"

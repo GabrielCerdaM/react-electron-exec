@@ -6,13 +6,14 @@ class Payment extends Model { }
 Payment.init({
     type: DataTypes.STRING,
     amount: DataTypes.INTEGER,
+    ContractId: DataTypes.INTEGER,
 }, {
     sequelize,
     modelName: "Payment",
     timestamps: true, // Agrega automáticamente createdAt y updatedAt
-    paranoid: true
+    paranoid: true,
 })
 
 console.log("The table for the Payment model was just (re)created!");
 
-module.exports = {Payment}
+module.exports = Payment
